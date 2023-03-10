@@ -187,11 +187,13 @@ struct Visualizer::Impl {
 
     Impl(Drone &drone, ros::NodeHandle &nh,
          const XmlRpc::XmlRpcValue &config) : drone(drone),
-#ifdef USE_CARTOGRAPHER_GRID                      
+#ifdef USE_CARTOGRAPHER_GRID
                                               o_grid(mapping::MapLimits(config["map_resolution"], Eigen::Vector2d(4., 4.), mapping::CellLimits(160, 160)), &conversion_table),
                                               l_grid(mapping::MapLimits(config["map_resolution"], Eigen::Vector2d(4., 4.), mapping::CellLimits(160, 160)), &conversion_table),
                                               p_grid(mapping::MapLimits(config["map_resolution"], Eigen::Vector2d(4., 4.), mapping::CellLimits(160, 160)), &conversion_table),
 #else
+                                              // TODO: What does hit_probability/miss_probability do? Do we need these if we're not
+                                              //       running a simulation?
                                               inserter((double)config["hit_probability"], (double)config["miss_probability"]),
 #endif
                                               o_grid_pub(nh.advertise<nav_msgs::OccupancyGrid>("/odom_map", 5)),

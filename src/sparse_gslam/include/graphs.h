@@ -9,6 +9,9 @@
 #include <deque>
 #include <unordered_set>
 
+#include <fstream>
+#include <iostream>
+
 void setup_lm_opt(g2o::SparseOptimizer& opt);
 void setup_pose_opt(g2o::SparseOptimizer& opt);
 
@@ -27,6 +30,28 @@ struct LandmarkGraph {
     g2o::SparseOptimizer opt;
     LandmarkGraph();
     ~LandmarkGraph();
+
+    void save_landmarks(std::string const& out_name) const {
+        std::ofstream out{out_name};
+        for (auto const& lm : landmarks)
+            lm.save(out);
+        out << std::endl;
+        out.close();
+    }
+
+    void load_landmarks(std::string const& in_name) {
+        // Delete all previous landmarks...
+        landmarks = std::deque<g2o::VertexRhoTheta, Eigen::aligned_allocator<g2o::VertexRhoTheta>>{};
+        std::ifstream in{in_name};
+        char junk;
+        while (!in.eof()) {
+            auto vrt = g2o::VertexRhoTheta{};
+            vrt.load(in);
+            landmarks.push_back(vrt);
+            in >> junk;
+        }
+        in.close();
+    }
 };
 struct PoseGraph {
     boost::shared_mutex mu;

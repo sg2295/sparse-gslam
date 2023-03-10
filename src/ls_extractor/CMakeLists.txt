@@ -12,6 +12,7 @@ find_package(catkin REQUIRED COMPONENTS
   message_generation
   tf
   pcl_ros
+  PATHS /opt/ros/melodic/etc/catkin
 )
 
 ## System dependencies are found with CMake's conventions
@@ -174,7 +175,7 @@ target_link_libraries(laser_node smc ls_visualizer ${catkin_LIBRARIES})
 
 # add_executable(ls_extractor_cluster src/ls_extractor_cluster.cpp)
 # add_dependencies(ls_extractor_cluster ls_extractor_generate_messages_cpp)
-# target_link_libraries(ls_extractor_cluster ${catkin_LIBRARIES} ls_extractor) 
+# target_link_libraries(ls_extractor_cluster ${catkin_LIBRARIES} ls_extractor)
 #############
 ## Install ##
 #############

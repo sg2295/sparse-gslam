@@ -11,6 +11,11 @@
 #include "ls_extractor/ros_utils.h"
 #include "multicloud2.h"
 
+
+#include "g2o_bindings/vertex_rhotheta.h"
+#include <fstream>
+#include <iostream>
+
 // #define PUB_TEXT 1
 
 using namespace std::chrono;
@@ -31,6 +36,17 @@ void write_result_odom(std::ofstream& file, const g2o::SE2& base_est, const Delt
         auto estimate = base_est * it->dpose;
         write_result_line(file, estimate, it->dt);
     }
+}
+
+void dump_to_file(Drone& drone) {
+    // To visualize stuff, we need:
+    //  [x] XmlRpcValue slam_config (easy to get - already fetched from a saved file)
+    //  [x] NodeHandle nh (Probably not necessary... We can create a new one when reading from file)
+    //  [ ] Drone drone
+    // drone.lm_graph
+    // Save landmark graph
+    // Save pose graph
+    // Save loop_closer
 }
 
 visualization_msgs::Marker text_marker(const std::string& frame_id, const std::string& text) {
@@ -100,7 +116,7 @@ int main(int argc, char** argv) {
     std::ofstream backend_time(dataset_dir + dataset_name + ".btime");
     std::ofstream dataset_time(dataset_dir + dataset_name + ".dtime");
     std::ofstream outfile(dataset_dir + dataset_name + ".result");
-    
+
     frontend_time << std::fixed;
     backend_time << std::fixed;
     dataset_time << std::fixed;
@@ -149,7 +165,7 @@ int main(int argc, char** argv) {
             drone.msgCallback(extractor.segments, odometry, pc_converter.scan);
             frontend_time << (std::chrono::steady_clock::now() - start_t).count() * 1e-9 << '\n';
 
-            ls_vis.visualize(extractor.segments, odometry.header.stamp);
+            // ls_vis.visualize(extractor.segments, odometry.header.stamp);
             if (k % m_interval == 0) {
                 start_t = std::chrono::steady_clock::now();
                 drone.loop_closer.precompute();
@@ -174,7 +190,18 @@ int main(int argc, char** argv) {
     };
 
     auto final_cleanup = [&drone, &slam_vis]() {
-        slam_vis.stop();
+        // Test to verify our way of saving/loading has no adverse effects...
+        std::cout << "saving landmarks\n";
+        std::cout << "# of landmarks: " <<  drone.lm_graph.landmarks.size() << '\n';
+        drone.lm_graph.save_landmarks("landmarks.txt");
+        std::cout << "clearing landmarks\n";
+        drone.lm_graph.landmarks.clear();
+        std::cout << "# of landmarks: " <<  drone.lm_graph.landmarks.size() << '\n';
+        std::cout << "loading landmarks\n";
+        drone.lm_graph.load_landmarks("landmarks.txt");
+        std::cout << "# of landmarks: " <<  drone.lm_graph.landmarks.size() << '\n';
+
+        // slam_vis.stop();
         drone.loop_closer.loop_closure_min_score = 0.5;
         drone.loop_closer.precompute();
         drone.loop_closer.match();
@@ -209,7 +236,7 @@ int main(int argc, char** argv) {
     int _rate;
     ros::param::get("~rate", _rate);
     ros::param::get("~realtime", realtime);
-    slam_vis.start(slam_config["visualize_rate"]);
+    // slam_vis.start(slam_config["visualize_rate"]);
 
     if (realtime) {
         std::cout << "using simulated realtime node" << std::endl;
@@ -260,13 +287,57 @@ int main(int argc, char** argv) {
     for (auto end = drone.lm_graph.poses.begin() + drone.loop_closer.last_opt_pose_index; lit != end; lit++, pit++) {
         write_result_odom(outfile, pit->pose.estimate(), lit->odom);
     }
+    std::cout << "Finished writing pose graph data.\n";
     g2o::SE2 base_est = (pit - 1)->pose.estimate();
     for (auto end = drone.lm_graph.poses.end(); lit != end; lit++) {
         base_est *= ((lit - 1)->pose.estimate().inverse() * lit->pose.estimate());
         write_result_odom(outfile, base_est, lit->odom);
     }
+    std::cout << "Finished writing landmark graph data.\n";
     outfile.flush();
 
     std::cout << "Log runner finished. Press Ctrl-C to shutdown" << std::endl;
+/*
+    drone.lm_graph.save_landmarks("landmarks.txt");
+    std::cout << drone.lm_graph.landmarks.size() << " =size before...\n";
+    drone.lm_graph.landmarks.pop_back();
+    drone.lm_graph.landmarks.pop_front();
+    std::cout << drone.lm_graph.landmarks.size() << " =size after we popped front/back\n";
+    drone.lm_graph.load_landmarks("/home/sergios/.ros/landmarks.txt");
+    std::cout << drone.lm_graph.landmarks.size() << " =size after...\n";
+*/
+
+    // ! INITIAL TESTS BELOW ! now moved into their own functions/classes !
+    // std::cout << "Saving lm_graph.landmarks to file... \n";
+    // std::ofstream out("landmarks.txt");  // ! This is stored in the /user/.ros/ directory
+    // for (auto const& lm : drone.lm_graph.landmarks)
+    //     lm.save(out);
+    // out << std::endl;
+    // out.close();
+
+    // std::cout << "Reading landmarks from file: \n";
+    // std::ifstream in("/home/sergios/.ros/landmarks.txt");
+    // char junk;
+    // std::deque<g2o::VertexRhoTheta, Eigen::aligned_allocator<g2o::VertexRhoTheta>> lms;
+    // while (!in.eof()) {
+    //     auto vrt = g2o::VertexRhoTheta{};
+    //     vrt.load(in);
+    //     lms.push_back(vrt);
+    //     in >> junk;
+    // }
+    // in.close();
+    // std::cout << "initial had length: " << drone.lm_graph.landmarks.size() << std::endl;
+    // std::cout << "initial first elem: ";
+    // drone.lm_graph.landmarks.front().save(std::cout);
+    // std::cout << "\ninitial last elem: ";
+    // drone.lm_graph.landmarks.back().save(std::cout);
+
+    // std::cout << "\nloaded had length: " << lms.size() << std::endl;
+    // std::cout << "\nloaded first elem: ";
+    // lms.front().save(std::cout);
+    // std::cout << "\nloaded last elem: ";
+    // lms.back().save(std::cout);
+    // std::cout << std::endl;
+
     ros::waitForShutdown();
 }
