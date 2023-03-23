@@ -247,6 +247,32 @@ class USCDataProvider : public DataProvider {
     }
 };
 
+
+class EV3DataProvider : public DataProvider {
+    std::ifstream log_file;
+    std::string line, prefix, junk;
+    double last_time = 0;
+
+   public:
+    EV3DataProvider(const std::string& fpath) : log_file(fpath) {}
+
+    bool get_data(double& time, g2o::SE2& pose, std::vector<float>& full_range) override {
+        if (!std::getline(log_file, line)) return false;
+        std::istringstream iss(line);
+        std::array<float, 3> pose_data{};
+        for (size_t i = 0; i < pose_data.size(); ++i)
+            iss >> pose_data[i];
+        pose = g2o::SE2(pose_data[0], pose_data[1], pose_data[2]);
+        unsigned constexpr num_readings = 13;  // Number of readings per scan
+        full_range.resize(num_readings);
+        for (size_t i = 0; i < num_readings; ++i)
+            iss >> full_range[i];
+        time = last_time++;  // TODO: Do we need to encode some concept of time on the EV3 end?
+        // TODO: Do we need to read into junk the final '\n' char?
+        return true;
+    }
+};
+
 #include <message_filters/subscriber.h>
 #include <message_filters/sync_policies/approximate_time.h>
 #include <message_filters/synchronizer.h>
@@ -329,6 +355,8 @@ std::unique_ptr<DataProvider> create_data_provider(const std::string& name, cons
         return std::unique_ptr<DataProvider>(new ROSBagDataProvider(fpath));
     } else if (name == "oregon") {
         return std::unique_ptr<DataProvider>(new IntelOregonLogDataProvider(fpath));
+    } else if (name == "ev3") {
+        return std::unique_ptr<DataProvider>(new EV3DataProvider(fpath));
     }
     abort();
 }
