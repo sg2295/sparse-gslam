@@ -8,7 +8,7 @@ std_rpcm: 0.0001
 angle_min: -1.5707963267948966
 angle_max: 1.5707963267948966
 range_min: 0.0
-range_max: 5.0
+range_max: 2.5
 scan_size: 5
 multicloud_size: 160
 

@@ -261,7 +261,7 @@ class EV3DataProvider : public DataProvider {
         std::istringstream iss(line);
         std::array<float, 3> pose_data{};
         for (size_t i = 0; i < pose_data.size(); ++i)
-            iss >> pose_data[i];  // TODO: Readings in centimeters; convert to meters
+            iss >> pose_data[i] / 100;
         pose = g2o::SE2(pose_data[0], pose_data[1], pose_data[2]);
         std::cout << pose_data[0] << pose_data[1] << pose_data[2] << ": ";
         unsigned constexpr num_readings = 13;  // Number of readings per scan
