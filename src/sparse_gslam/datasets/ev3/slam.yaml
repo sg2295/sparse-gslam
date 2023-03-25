@@ -13,7 +13,7 @@ scan_size: 5
 multicloud_size: 160
 
 landmark_max_gap: 0.5
-landmark_max_dist: 10.0
+landmark_max_dist: 1.0
 landmark_assoc_thresh: 0.5
 
 # settings for the scan to map matcher
@@ -29,9 +29,9 @@ hit_probability: 0.7
 miss_probability: 0.4
 
 # settings for the submap builder
-max_match_distance: 1.0 # meters
+max_match_distance: 0.5 # meters
 submap_resolution: 0.1 # meters
-submap_trajectory_length: 0.6 # meters
+submap_trajectory_length: 0.3 # meters
 submap_overlap_poses: 0 # number of poses
 last_submap_not_match: 3
 loop_closing_threads: 8

@@ -263,7 +263,7 @@ class EV3DataProvider : public DataProvider {
         for (size_t i = 0; i < pose_data.size(); ++i)
             iss >> pose_data[i];
         pose = g2o::SE2(pose_data[0] / 100, pose_data[1] / 100, pose_data[2]);
-        std::cout << pose_data[0] / 100 << pose_data[1] / 100 << pose_data[2] << ": ";
+        std::cout << pose_data[0] / 100 << ", " << pose_data[1] / 100 << ", " << pose_data[2] << ": ";
         unsigned constexpr num_readings = 13;  // Number of readings per scan
         full_range.resize(num_readings);
         for (size_t i = 0; i < num_readings; ++i) {
