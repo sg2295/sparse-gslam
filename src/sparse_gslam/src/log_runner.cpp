@@ -191,15 +191,15 @@ int main(int argc, char** argv) {
 
     auto final_cleanup = [&drone, &slam_vis]() {
         // Test to verify our way of saving/loading has no adverse effects...
-        std::cout << "saving landmarks\n";
-        std::cout << "# of landmarks: " <<  drone.lm_graph.landmarks.size() << '\n';
-        drone.lm_graph.save_landmarks("landmarks.txt");
-        std::cout << "clearing landmarks\n";
-        drone.lm_graph.landmarks.clear();
-        std::cout << "# of landmarks: " <<  drone.lm_graph.landmarks.size() << '\n';
-        std::cout << "loading landmarks\n";
-        drone.lm_graph.load_landmarks("landmarks.txt");
-        std::cout << "# of landmarks: " <<  drone.lm_graph.landmarks.size() << '\n';
+        // std::cout << "saving landmarks\n";
+        // std::cout << "# of landmarks: " <<  drone.lm_graph.landmarks.size() << '\n';
+        // drone.lm_graph.save_landmarks("landmarks.txt");
+        // std::cout << "clearing landmarks\n";
+        // drone.lm_graph.landmarks.clear();
+        // std::cout << "# of landmarks: " <<  drone.lm_graph.landmarks.size() << '\n';
+        // std::cout << "loading landmarks\n";
+        // drone.lm_graph.load_landmarks("landmarks.txt");
+        // std::cout << "# of landmarks: " <<  drone.lm_graph.landmarks.size() << '\n';
 
         // slam_vis.stop();
         drone.loop_closer.loop_closure_min_score = 0.5;
