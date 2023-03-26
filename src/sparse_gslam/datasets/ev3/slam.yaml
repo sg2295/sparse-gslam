@@ -29,9 +29,9 @@ hit_probability: 0.7
 miss_probability: 0.4
 
 # settings for the submap builder
-max_match_distance: 1.0 # meters
+max_match_distance: 0.5 # meters
 submap_resolution: 0.1 # meters
-submap_trajectory_length: 1.0 # meters
+submap_trajectory_length: 0.5 # meters
 submap_overlap_poses: 0 # number of poses  TODO: try 1...
 last_submap_not_match: 3
 loop_closing_threads: 8
