@@ -20,7 +20,7 @@ landmark_assoc_thresh: 0.4
 last_traj_length: 0.5
 loop_closure_min_score: 0.5
 angular_search_window: 1.0 # radians
-linear_search_window: 0.275 # meters
+linear_search_window: 0.3 # meters
 branch_and_bound_depth: 5
 
 # settings for the occupancy grid (these affect the map displaying)
@@ -31,7 +31,7 @@ miss_probability: 0.4
 max_match_distance: 0.75 # meters
 submap_resolution: 0.1 # meters
 submap_trajectory_length: 0.25 # meters
-submap_overlap_poses: 0 # number of poses  TODO: try 1...
+submap_overlap_poses: 1 # number of poses  TODO: try 1...
 last_submap_not_match: 2  # used to be 1...
 loop_closing_threads: 8  # 2 didn't make a difference
 
