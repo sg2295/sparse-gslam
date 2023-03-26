@@ -17,16 +17,15 @@ landmark_max_dist: 0.5
 landmark_assoc_thresh: 0.4
 
 # settings for the scan to map matcher
-last_traj_length: 0.75
+last_traj_length: 0.5
 loop_closure_min_score: 0.5
 angular_search_window: 1.0 # radians
-linear_search_window: 0.75 # meters
+linear_search_window: 0.275 # meters
 branch_and_bound_depth: 5
 
-# settings for the occupancy grid
-# TODO: What do these do...
-hit_probability: 0.9
-miss_probability: 0.1
+# settings for the occupancy grid (these affect the map displaying)
+hit_probability: 0.7
+miss_probability: 0.4
 
 # settings for the submap builder
 max_match_distance: 0.75 # meters
