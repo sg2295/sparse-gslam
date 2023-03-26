@@ -190,6 +190,9 @@ int main(int argc, char** argv) {
     };
 
     auto final_cleanup = [&drone, &slam_vis]() {
+        std::cout << "sleeping for cleanup...\n";
+        std::this_thread::sleep_for(std::chrono::seconds(30));
+        std::cout << "starting cleanup...\n";
         // Test to verify our way of saving/loading has no adverse effects...
         // std::cout << "saving landmarks\n";
         // std::cout << "# of landmarks: " <<  drone.lm_graph.landmarks.size() << '\n';
