@@ -1,5 +1,5 @@
-max_line_gap: 0.1  # from .25
-min_line_length: 0.01
+max_line_gap: 0.05  # from .25
+min_line_length: 0.1  # from .01
 min_split_dist: 0.01
 outlier_dist: 0.02
 min_line_points: 6
