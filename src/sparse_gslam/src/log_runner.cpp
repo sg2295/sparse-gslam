@@ -191,7 +191,7 @@ int main(int argc, char** argv) {
 
     auto final_cleanup = [&drone, &slam_vis]() {
         std::cout << "sleeping for cleanup...\n";
-        std::this_thread::sleep_for(std::chrono::seconds(30));
+        std::this_thread::sleep_for(std::chrono::seconds(10));
         std::cout << "starting cleanup...\n";
         // Test to verify our way of saving/loading has no adverse effects...
         // std::cout << "saving landmarks\n";
@@ -233,7 +233,7 @@ int main(int argc, char** argv) {
         std::cout << "Debug1\n";
         drone.pose_graph.opt.initializeOptimization();
         std::cout << "Debug4\n";
-        drone.pose_graph.opt.optimize(10);
+        drone.pose_graph.opt.optimize(20);
         slam_vis.visualize_landmarks(ros::Time::now());
     };
 

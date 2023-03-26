@@ -285,7 +285,7 @@ bool SubmapLoopCloser::match() {
             drone.pose_graph.opt.addEdge(odom_edge);
             std::cout << "Debug2\n";
             drone.pose_graph.opt.initializeOptimization();
-            drone.pose_graph.opt.optimize(10);
+            drone.pose_graph.opt.optimize(20);
             drone.pose_graph.opt.computeActiveErrors();
         }
 
