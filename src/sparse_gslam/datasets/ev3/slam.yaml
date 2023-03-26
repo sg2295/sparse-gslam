@@ -9,7 +9,7 @@ angle_min: -1.5707963267948966
 angle_max: 1.5707963267948966
 range_min: 0.0
 range_max: 2.5
-scan_size: 5
+scan_size: 13
 multicloud_size: 120
 
 landmark_max_gap: 0.5
@@ -20,7 +20,7 @@ landmark_assoc_thresh: 0.5
 last_traj_length: 0.5
 loop_closure_min_score: 0.7
 angular_search_window: 1.0 # radians
-linear_search_window: 0.5 # meters
+linear_search_window: 0.25 # meters
 branch_and_bound_depth: 5
 
 # settings for the occupancy grid
