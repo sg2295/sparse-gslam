@@ -144,6 +144,7 @@ void Drone::msgCallback(const ls_extractor::SegmentVector &bl_lines, const nav_m
 
         // online optimization is kind of buggy. If it results in segfault, please disable it
         if (need_reinit) {
+            std::cout << "Debug3\n";
             // we cannot rely on updateInitialization when we removed some edges or it is the first time we call init/optimize
             lm_graph.opt.initializeOptimization();
             lm_graph.opt.push();

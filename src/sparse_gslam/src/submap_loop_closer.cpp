@@ -109,7 +109,7 @@ MatchResult matchOne(int id, Submap* it, double angle_est, const std::vector<Eig
     MatchResult result;
     result.it = it;
     result.match = it->matcher.get().Match(
-        transform::Rigid2d::Rotation(angle_est), c_pc, loop_closure_min_score, 
+        transform::Rigid2d::Rotation(angle_est), c_pc, loop_closure_min_score,
         &result.score, &result.pose_estimate, result.covariance);
     return result;
 }
@@ -283,6 +283,7 @@ bool SubmapLoopCloser::match() {
             odom_edge->setRobustKernel(&dcs_kernel);
             drone.pose_graph.closures.insert(odom_edge);
             drone.pose_graph.opt.addEdge(odom_edge);
+            std::cout << "Debug2\n";
             drone.pose_graph.opt.initializeOptimization();
             drone.pose_graph.opt.optimize(20);
             drone.pose_graph.opt.computeActiveErrors();
