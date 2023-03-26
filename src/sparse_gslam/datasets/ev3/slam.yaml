@@ -25,8 +25,8 @@ branch_and_bound_depth: 5
 
 # settings for the occupancy grid
 # TODO: What do these do...
-hit_probability: 0.7
-miss_probability: 0.4
+hit_probability: 0.9
+miss_probability: 0.1
 
 # settings for the submap builder
 max_match_distance: 0.75 # meters
