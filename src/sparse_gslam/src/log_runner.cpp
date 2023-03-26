@@ -191,7 +191,7 @@ int main(int argc, char** argv) {
 
     auto final_cleanup = [&drone, &slam_vis]() {
         std::cout << "sleeping for cleanup...\n";
-        std::this_thread::sleep_for(std::chrono::seconds(10));
+        std::this_thread::sleep_for(std::chrono::seconds(5));
         std::cout << "starting cleanup...\n";
         // Test to verify our way of saving/loading has no adverse effects...
         // std::cout << "saving landmarks\n";
