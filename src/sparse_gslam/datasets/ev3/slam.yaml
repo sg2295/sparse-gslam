@@ -13,7 +13,7 @@ scan_size: 13
 multicloud_size: 110
 
 landmark_max_gap: 0.2
-landmark_max_dist: 0.4
+landmark_max_dist: 0.5
 landmark_assoc_thresh: 0.4
 
 # settings for the scan to map matcher
@@ -32,13 +32,13 @@ max_match_distance: 0.75 # meters
 submap_resolution: 0.1 # meters
 submap_trajectory_length: 0.25 # meters
 submap_overlap_poses: 0 # number of poses  TODO: try 1...
-last_submap_not_match: 2  # used to be 1...
-loop_closing_threads: 8  # 2 didn't make a difference
+last_submap_not_match: 1  # could try 2
+loop_closing_threads: 2  # used to be 8
 
 dcs_phi: 10.0
 
 # TODO: What
-match_interval: 10  # try with 5...
+match_interval: 5
 data_provider: ev3
 
 # visualization settings
