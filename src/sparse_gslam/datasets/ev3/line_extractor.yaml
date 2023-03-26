@@ -43,4 +43,4 @@ min_split_dist: 0.13
 outlier_dist: 0.1
 min_line_points: 2
 rmse_thresh: 0.1
-cluster_threshold: 50.0
+cluster_threshold: 25.0
