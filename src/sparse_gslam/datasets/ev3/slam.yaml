@@ -1,8 +1,8 @@
 address: radio://0/80/2M/E7E7E7E702
 std_x: 0.2
 std_y: 1.0
-std_w: 1.0
-std_r: 0.1
+std_w: 2.0
+std_r: 0.15
 std_rpcm: 0.0001
 
 angle_min: -1.5707963267948966
@@ -10,17 +10,17 @@ angle_max: 1.5707963267948966
 range_min: 0.0
 range_max: 2.5
 scan_size: 13
-multicloud_size: 110
+multicloud_size: 180  # 110
 
-landmark_max_gap: 0.2
-landmark_max_dist: 0.5
-landmark_assoc_thresh: 0.4
+landmark_max_gap: 0.05
+landmark_max_dist: 2.5
+landmark_assoc_thresh: 0.5
 
 # settings for the scan to map matcher
-last_traj_length: 0.5
-loop_closure_min_score: 0.5
-angular_search_window: 1.0 # radians
-linear_search_window: 0.5 # meters
+last_traj_length: 0.4  # used to be .5  # 0.17
+loop_closure_min_score: 0.6
+angular_search_window: 1.57 # radians  # 1.0  # 3.14
+linear_search_window: 0.8 # meters  # 0.5  # 1.5
 branch_and_bound_depth: 5
 
 # settings for the occupancy grid (these affect the map displaying)
@@ -28,12 +28,12 @@ hit_probability: 0.7
 miss_probability: 0.4
 
 # settings for the submap builder
-max_match_distance: 0.75 # meters
-submap_resolution: 0.1 # meters
-submap_trajectory_length: 0.25 # meters
+max_match_distance: 4.75 # meters
+submap_resolution: 0.075 # meters
+submap_trajectory_length: 1.75 # meters  # used to be .75
 submap_overlap_poses: 0 # number of poses  TODO: try 1...
-last_submap_not_match: 1  # could try 2
-loop_closing_threads: 2  # used to be 8
+last_submap_not_match: 0  # could try 2
+loop_closing_threads: 4  # used to be 8; can be 2 as well...
 
 dcs_phi: 10.0
 

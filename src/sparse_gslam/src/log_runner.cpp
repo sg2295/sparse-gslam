@@ -230,9 +230,7 @@ int main(int argc, char** argv) {
         // }
         // slam_vis.visualize_landmarks(ros::Time::now());
         // std::this_thread::sleep_for(std::chrono::seconds(5));
-        std::cout << "Debug1\n";
         drone.pose_graph.opt.initializeOptimization();
-        std::cout << "Debug4\n";
         drone.pose_graph.opt.optimize(20);
         slam_vis.visualize_landmarks(ros::Time::now());
     };
