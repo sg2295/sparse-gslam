@@ -10,7 +10,7 @@ angle_max: 1.5707963267948966
 range_min: 0.0
 range_max: 2.5
 scan_size: 5
-multicloud_size: 160
+multicloud_size: 120
 
 landmark_max_gap: 0.5
 landmark_max_dist: 1.0
