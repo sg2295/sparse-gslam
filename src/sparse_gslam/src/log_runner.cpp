@@ -200,7 +200,8 @@ int main(int argc, char** argv) {
         // std::cout << "loading landmarks\n";
         // drone.lm_graph.load_landmarks("landmarks.txt");
         // std::cout << "# of landmarks: " <<  drone.lm_graph.landmarks.size() << '\n';
-
+        std::cout << "number of lms: " << drone.lm_graph.landmarks.size() << '\n';
+        std::cout << "number of poses: " << drone.pose_graph.closures.size() << '\n';
         // slam_vis.stop();
         drone.loop_closer.loop_closure_min_score = 0.5;
         drone.loop_closer.precompute();
