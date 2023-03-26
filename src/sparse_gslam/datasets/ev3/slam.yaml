@@ -38,7 +38,7 @@ loop_closing_threads: 2  # used to be 8
 dcs_phi: 10.0
 
 # TODO: What
-match_interval: 5
+match_interval: 2
 data_provider: ev3
 
 # visualization settings
