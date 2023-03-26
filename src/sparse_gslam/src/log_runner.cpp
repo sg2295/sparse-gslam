@@ -84,7 +84,7 @@ int main(int argc, char** argv) {
     const float range_max = (double)slam_config["range_max"];
 
     full_scan.range_min = 0.0;
-    full_scan.range_max = 10.0;
+    full_scan.range_max = range_max;
     full_scan.angle_min = (double)slam_config["angle_min"];
     full_scan.angle_max = (double)slam_config["angle_max"];
     auto& full_range = full_scan.ranges;
