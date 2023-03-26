@@ -230,7 +230,7 @@ int main(int argc, char** argv) {
         std::cout << "Debug1\n";
         drone.pose_graph.opt.initializeOptimization();
         std::cout << "Debug4\n";
-        drone.pose_graph.opt.optimize(20);
+        drone.pose_graph.opt.optimize(10);
         slam_vis.visualize_landmarks(ros::Time::now());
     };
 
