@@ -8,11 +8,20 @@
 # cluster_threshold: 100.0
 
 
-## New version?
-max_line_gap: 0.25
-min_line_length: 0.5
-min_split_dist: 0.1
-outlier_dist: 0.1
+## Gives 15 lms:
+# max_line_gap: 0.25
+# min_line_length: 0.5
+# min_split_dist: 0.1
+# outlier_dist: 0.1
+# min_line_points: 4
+# rmse_thresh: 0.1
+# cluster_threshold: 100.0
+
+## Gives ? lms:
+max_line_gap: 0.05
+min_line_length: 0.1
+min_split_dist: 0.02
+outlier_dist: 0.02
 min_line_points: 4
 rmse_thresh: 0.1
 cluster_threshold: 100.0
