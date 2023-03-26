@@ -13,14 +13,14 @@ scan_size: 13
 multicloud_size: 110
 
 landmark_max_gap: 0.2
-landmark_max_dist: 0.5
-landmark_assoc_thresh: 0.7  # was .4
+landmark_max_dist: 0.4
+landmark_assoc_thresh: 0.4
 
 # settings for the scan to map matcher
 last_traj_length: 0.5
 loop_closure_min_score: 0.5
 angular_search_window: 1.0 # radians
-linear_search_window: 0.3 # meters
+linear_search_window: 0.5 # meters
 branch_and_bound_depth: 5
 
 # settings for the occupancy grid (these affect the map displaying)
