@@ -17,7 +17,7 @@ landmark_max_dist: 0.5
 landmark_assoc_thresh: 0.4
 
 # settings for the scan to map matcher
-last_traj_length: 0.5
+last_traj_length: 0.17  # used to be .5
 loop_closure_min_score: 0.6
 angular_search_window: 1.0 # radians
 linear_search_window: 0.5 # meters
