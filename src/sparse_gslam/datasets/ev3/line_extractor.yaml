@@ -28,13 +28,13 @@
 
 
 # ## Gives 47 lms; 6 poses:
-max_line_gap: 0.2
-min_line_length: 0.13
-min_split_dist: 0.13
-outlier_dist: 0.1
-min_line_points: 2
-rmse_thresh: 0.1
-cluster_threshold: 100.0
+# max_line_gap: 0.2
+# min_line_length: 0.13
+# min_split_dist: 0.13
+# outlier_dist: 0.1
+# min_line_points: 2
+# rmse_thresh: 0.1
+# cluster_threshold: 100.0
 
 ## What ???
 max_line_gap: 0.2
