@@ -1,6 +1,6 @@
 address: radio://0/80/2M/E7E7E7E702
-std_x: 0.02  # 0.2
-std_y: 0.1  # 1.0
+std_x: 1.0  # 0.2
+std_y: 1.0  # 1.0
 std_w: 1.0
 std_r: 0.1
 std_rpcm: 0.0001
