@@ -32,7 +32,7 @@ max_match_distance: 4.75 # meters
 submap_resolution: 0.075 # meters
 submap_trajectory_length: 0.75 # meters
 submap_overlap_poses: 0 # number of poses  TODO: try 1...
-last_submap_not_match: 1  # could try 2
+last_submap_not_match: 0  # could try 2
 loop_closing_threads: 4  # used to be 8; can be 2 as well...
 
 dcs_phi: 10.0
