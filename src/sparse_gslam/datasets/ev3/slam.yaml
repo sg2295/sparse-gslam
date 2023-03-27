@@ -17,10 +17,10 @@ landmark_max_dist: 2.5
 landmark_assoc_thresh: 0.5
 
 # settings for the scan to map matcher
-last_traj_length: 1.5  # used to be .5  # 0.17
+last_traj_length: 0.4  # used to be .5  # 0.17
 loop_closure_min_score: 0.6
-angular_search_window: 3.14 # radians  # 1.0  # 3.14
-linear_search_window: 5.5 # meters  # 0.5  # 1.5
+angular_search_window: 1.57 # radians  # 1.0  # 3.14
+linear_search_window: 0.8 # meters  # 0.5  # 1.5
 branch_and_bound_depth: 5
 
 # settings for the occupancy grid (these affect the map displaying)
