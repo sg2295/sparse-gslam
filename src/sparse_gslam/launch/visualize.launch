@@ -1,9 +1,5 @@
 <launch>
-    <arg name="dataset" default="intel-lab"/>
-    <arg name="postfix" default=""/>
-    <arg name="realtime" default="false"/>
-    <arg name="rate" default="100000"/>
-    <node type="rviz" name="rviz1" pkg="rviz" args="-d $(find sparse_gslam)/rviz_config/landmark.rviz" />
-    <node type="rviz" name="rviz2" pkg="rviz" args="-d $(find sparse_gslam)/rviz_config/pose_graph.rviz" />
+    <node type="rviz" name="landmark graph" pkg="rviz" args="-d $(find sparse_gslam)/rviz_config/landmark.rviz" />
+    <node type="rviz" name="pose graph" pkg="rviz" args="-d $(find sparse_gslam)/rviz_config/pose_graph.rviz" />
     <node pkg="rosbag" type="play" name="replay" output="screen" args="$(find sparse_gslam)/bagfiles/out.bag" />
 </launch>
