@@ -12,8 +12,8 @@ range_max: 2.5
 scan_size: 13
 multicloud_size: 110
 
-landmark_max_gap: 0.2
-landmark_max_dist: 5.25
+landmark_max_gap: 0.5
+landmark_max_dist: 5.0
 landmark_assoc_thresh: 0.4
 
 # settings for the scan to map matcher
