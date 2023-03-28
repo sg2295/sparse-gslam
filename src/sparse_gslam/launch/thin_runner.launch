@@ -6,8 +6,7 @@
     <node pkg="tf2_ros" type="static_transform_publisher" name="static_tf_pub2" args="0 0 0 0 0 0 1 map odom" />
     <!-- <node type="rviz" name="rviz0" pkg="rviz" args="-d $(find sparse_gslam)/rviz_config/odom.rviz" /> -->
     <!-- Launch the ROSBAGs here; only record the necessary topics -->
-    <arg name="time_now" default="$(eval eval ('_' + '_import_' + '_(\'datetime\')').datetime.now().strftime('%Y-%m-%d-%H-%M-%S'))"/>
-    <node pkg="rosbag" type="record" name="pose_graph_recorder" args="record -a -O $(find sparse_gslam)/bagfiles/out-$(time_now).bag"/>
+    <node pkg="rosbag" type="record" name="pose_graph_recorder" args="record -a -O $(find sparse_gslam)/bagfiles/out.bag"/>
 
     <node pkg="sparse_gslam" type="log_runner" name="log_runner" output="screen">
         <rosparam param="realtime" subst_value="true">$(arg realtime)</rosparam>
