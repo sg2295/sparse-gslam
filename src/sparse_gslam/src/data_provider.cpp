@@ -302,8 +302,13 @@ class EV3DataProvider : public DataProvider {
             bearing.at(j - 1) = temp;
         }
     }
+
+    std::cout << "sorted array:";
+    for (auto const i : bearing) std::cout << " " << i;
+    std::cout << std::endl;
     static_assert(bearing.size() % 2 == 0, "Fix median index calculation");
     size_t mid_idx = static_cast<size_t>((bearing.size() - 1) / 2);
+    std::cout << "Median idx: "<< mid_idx << " with item: " << bearing.at(mid_idx) << std::endl;
     return bearing.at(mid_idx);
     }
 };
