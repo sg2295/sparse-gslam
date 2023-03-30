@@ -294,13 +294,14 @@ class EV3DataProvider : public DataProvider {
     float median_filter(std::array<float, num_readings_per_bearing>& bearing) const {
     // TODO: Look into optimized sorting networks for # elements <= 10
     // Use insertion sort since array is small
-    for (size_t i = 0; i < bearing.size() - 1; ++i) {
-        int j = static_cast<int>(i);
-        while (j > 0 && bearing.at(j - 1) > bearing.at(j)) {
-            float temp = bearing.at(j);
-            bearing.at(j) = bearing.at(j - 1);
-            bearing.at(j - 1) = temp;
+    for (size_t i = 1; i < bearing.size(); ++i) {
+        auto key = arr.at(i);
+        size_t j = i - 1;
+        while (j != static_cast<size_t>(-1) && bearing.at(j) > key) {
+            bearing.at(j + 1) = bearing.at(j);
+            j--;
         }
+        bearing.at(j + 1) = key;
     }
 
     std::cout << "sorted array:";
@@ -308,8 +309,7 @@ class EV3DataProvider : public DataProvider {
     std::cout << std::endl;
     static_assert(bearing.size() % 2 == 0, "Fix median index calculation");
     size_t mid_idx = static_cast<size_t>((bearing.size() - 1) / 2);
-    std::cout << "Median idx: "<< mid_idx << " with item: " << bearing.at(mid_idx) << std::endl;
-    return bearing.at(mid_idx);
+    return (bearing.at(mid_idx) + bearing.at(mid_idx + 1)) / 2;
     }
 };
 
