@@ -274,9 +274,9 @@ class EV3DataProvider : public DataProvider {
                 iss >> bearing.at(j);
             // ! Choose what filtering method we will use !
             // 1) Average filter (incorporates outliers and skews results)
-            full_range.at(i) = average_filter(bearing) / 100;
+            // full_range.at(i) = average_filter(bearing) / 100;
             // 2) Median filter (effectively removes outliers from the data)
-            // TODO: median_filter(bearing);
+            full_range.at(i) = median_filter(bearing) / 100;
             std::cout << full_range.at(i) << " ";
         }
         std::cout << std::endl;
@@ -288,7 +288,23 @@ class EV3DataProvider : public DataProvider {
         float total_val = 0;
         for (float const val : bearing)
             total_val += val;
-        return total_val / num_readings_per_bearing;
+        return total_val / bearing.size();
+    }
+
+    float median_filter(std::array<float, num_readings_per_bearing>& bearing) const {
+    // TODO: Look into optimized sorting networks for # elements <= 10
+    // Use insertion sort since array is small
+    for (size_t i = 0; i < bearing.size() - 1; ++i) {
+        int j = static_cast<int>(i);
+        while (j > 0 && bearing.at(j - 1) > bearing.at(j)) {
+            float temp = bearing.at(j);
+            bearing.at(j) = bearing.at(j - 1);
+            bearing.at(j - 1) = temp;
+        }
+    }
+    static_assert(bearing.size() % 2 == 0, "Fix median index calculation");
+    size_t mid_idx = static_cast<size_t>((bearing.size() - 1) / 2);
+    return bearing.at(mid_idx);
     }
 };
 
