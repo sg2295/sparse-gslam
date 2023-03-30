@@ -251,7 +251,9 @@ class USCDataProvider : public DataProvider {
 class EV3DataProvider : public DataProvider {
     std::ifstream log_file;
     std::string line, prefix, junk;
-    double last_time = 0;
+    double prev_time = 0;
+    static unsigned constexpr num_readings = 13;
+    static unsigned constexpr num_readings_per_bearing = 10;
 
    public:
     EV3DataProvider(const std::string& fpath) : log_file(fpath) {}
@@ -261,20 +263,32 @@ class EV3DataProvider : public DataProvider {
         std::istringstream iss(line);
         std::array<float, 3> pose_data{};
         for (size_t i = 0; i < pose_data.size(); ++i)
-            iss >> pose_data[i];
-        pose = g2o::SE2(pose_data[0] / 100, pose_data[1] / 100, pose_data[2]);
-        std::cout << pose_data[0] / 100 << ", " << pose_data[1] / 100 << ", " << pose_data[2] << ": ";
-        unsigned constexpr num_readings = 13;  // Number of readings per scan
+            iss >> pose_data.at(i);
+        pose = g2o::SE2(pose_data.at(0) / 100, pose_data.at(1) / 100, pose_data.at(2));
+        std::cout << pose_data.at(0) / 100 << ", " << pose_data.at(1) / 100 << ", " << pose_data.at(2) << ": ";
+
         full_range.resize(num_readings);
         for (size_t i = 0; i < num_readings; ++i) {
-            iss >> full_range[i];
-            full_range[i] /= 100;
-            std::cout << full_range[i] << " ";
+            auto bearing = std::array<float, num_readings_per_bearing>{};
+            for (size_t j = 0; j < num_readings_per_bearing; ++j)
+                iss >> bearing.at(j);
+            // ! Choose what filtering method we will use !
+            // 1) Average filter (incorporates outliers and skews results)
+            full_range.at(i) = average_filter(bearing);
+            // 2) Median filter (effectively removes outliers from the data)
+            // TODO: median_filter(bearing);
+            std::cout << full_range.at(i) << " ";
         }
         std::cout << std::endl;
-        time = last_time++;  // TODO: Do we need to encode some concept of time on the EV3 end?
-        // TODO: Do we need to read into junk the final '\n' char?
+        time = prev_time++;
         return true;
+    }
+   private:
+    float average_filter(std::array<float, num_readings_per_bearing> const& bearing) const {
+        float total_val = 0;
+        for (float const val : bearing)
+            total_val += val;
+        return total_val / num_readings_per_bearing;
     }
 };
 
