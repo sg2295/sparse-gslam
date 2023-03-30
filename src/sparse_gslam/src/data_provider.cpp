@@ -295,13 +295,13 @@ class EV3DataProvider : public DataProvider {
     // TODO: Look into optimized sorting networks for # elements <= 10
     // Use insertion sort since array is small
     for (size_t i = 1; i < bearing.size(); ++i) {
-        auto key = arr.at(i);
+        auto temp = bearing.at(i);
         size_t j = i - 1;
-        while (j != static_cast<size_t>(-1) && bearing.at(j) > key) {
+        while (j != static_cast<size_t>(-1) && bearing.at(j) > temp) {
             bearing.at(j + 1) = bearing.at(j);
             j--;
         }
-        bearing.at(j + 1) = key;
+        bearing.at(j + 1) = temp;
     }
 
     std::cout << "sorted array:";
