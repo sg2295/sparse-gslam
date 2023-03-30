@@ -265,7 +265,7 @@ class EV3DataProvider : public DataProvider {
         for (size_t i = 0; i < pose_data.size(); ++i)
             iss >> pose_data.at(i);
         pose = g2o::SE2(pose_data.at(0) / 100, pose_data.at(1) / 100, pose_data.at(2));
-        std::cout << pose_data.at(0) / 100 << ", " << pose_data.at(1) / 100 << ", " << pose_data.at(2) << ": ";
+        // std::cout << pose_data.at(0) / 100 << ", " << pose_data.at(1) / 100 << ", " << pose_data.at(2) << ": ";
 
         full_range.resize(num_readings);
         for (size_t i = 0; i < num_readings; ++i) {
@@ -275,11 +275,12 @@ class EV3DataProvider : public DataProvider {
             // ! Choose what filtering method we will use !
             // 1) Average filter (incorporates outliers and skews results)
             // full_range.at(i) = average_filter(bearing) / 100;
-            // 2) Median filter (effectively removes outliers from the data)
+            // 2) Median filter (effectively removes outliers & impulse noise)
             full_range.at(i) = median_filter(bearing) / 100;
-            std::cout << full_range.at(i) << " ";
+            // 3) Kalman filter
+            // std::cout << full_range.at(i) << " ";
         }
-        std::cout << std::endl;
+        // std::cout << std::endl;
         time = prev_time++;
         return true;
     }
@@ -303,10 +304,7 @@ class EV3DataProvider : public DataProvider {
         }
         bearing.at(j + 1) = temp;
     }
-
-    std::cout << "sorted array:";
-    for (auto const i : bearing) std::cout << " " << i;
-    std::cout << std::endl;
+    // Get median
     static_assert(bearing.size() % 2 == 0, "Fix median index calculation");
     size_t mid_idx = static_cast<size_t>((bearing.size() - 1) / 2);
     return (bearing.at(mid_idx) + bearing.at(mid_idx + 1)) / 2;
