@@ -274,7 +274,7 @@ class EV3DataProvider : public DataProvider {
                 iss >> bearing.at(j);
             // ! Choose what filtering method we will use !
             // 1) Average filter (incorporates outliers and skews results)
-            full_range.at(i) = average_filter(bearing);
+            full_range.at(i) = average_filter(bearing) / 100;
             // 2) Median filter (effectively removes outliers from the data)
             // TODO: median_filter(bearing);
             std::cout << full_range.at(i) << " ";
