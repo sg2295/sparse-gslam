@@ -2,7 +2,7 @@ address: radio://0/80/2M/E7E7E7E702
 std_x: 0.03
 std_y: 0.03
 std_w: 1.0
-std_r: 0.1
+std_r: 0.01  # The ev3 spec claims a 0.01 resolution https://www.mikrocontroller.net/attachment/338591/hardware_developer_kit.pdf
 std_rpcm: 0.0001
 
 angle_min: -1.5707963267948966
