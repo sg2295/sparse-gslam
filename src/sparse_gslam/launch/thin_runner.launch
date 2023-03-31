@@ -27,6 +27,6 @@
         <rosparam param="dataset_dir" subst_value="true">$(find sparse_gslam)/datasets/$(arg dataset)/</rosparam>
         <rosparam param="dataset_name" subst_value="true">$(arg dataset)</rosparam>
         <rosparam file="$(find sparse_gslam)/datasets/$(arg dataset)/slam$(arg postfix).yaml" ns="slam"></rosparam>
-        <rosparam file="$(find sparse_gslam)/datasets/$(arg dataset)/line_extractor.yaml" ns="line_extractor"></rosparam>
+        <rosparam file="$(find sparse_gslam)/datasets/$(arg dataset)/line_extractor$(arg postfix).yaml" ns="line_extractor"></rosparam>
     </node>
 </launch>

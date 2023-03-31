@@ -253,7 +253,7 @@ class EV3DataProvider : public DataProvider {
     std::string line, prefix, junk;
     double prev_time = 0;
     static unsigned constexpr num_readings = 13;
-    static unsigned constexpr num_readings_per_bearing = 10;
+    static unsigned constexpr num_readings_per_bearing = 25;
 
    public:
     EV3DataProvider(const std::string& fpath) : log_file(fpath) {}
@@ -315,9 +315,12 @@ class EV3DataProvider : public DataProvider {
             bearing.at(j + 1) = temp;
         }
         // Get median
-        static_assert(bearing.size() % 2 == 0, "Fix median index calculation");
-        size_t mid_idx = static_cast<size_t>((bearing.size() - 1) / 2);
-        return (bearing.at(mid_idx) + bearing.at(mid_idx + 1)) / 2;
+        if (bearing.size() % 2 == 0) {
+            size_t mid_idx = static_cast<size_t>((bearing.size() - 1) / 2);
+            return (bearing.at(mid_idx) + bearing.at(mid_idx + 1)) / 2;
+        }
+        std::cout << "Middle index is: " << static_cast<size_t>((bearing.size() - 1) / 2) << std::endl;
+        return bearing.at(static_cast<size_t>((bearing.size() - 1) / 2));
     }
 };
 
