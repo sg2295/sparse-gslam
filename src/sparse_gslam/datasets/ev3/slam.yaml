@@ -1,33 +1,51 @@
 address: radio://0/80/2M/E7E7E7E702
+# STD of odometry (meters).  The larger error the smaller the weight (pose-pose constaint)
 std_x: 0.01  # both used to be .03
 std_y: 0.01
 std_w: 1.0
+# STD of measurements (meters). The larger error the smaller the weight (pose-landmark constraint)
 std_r: 0.01  # The ev3 spec claims a 0.01 resolution https://www.mikrocontroller.net/attachment/338591/hardware_developer_kit.pdf
-std_rpcm: 0.0001
+std_rpcm: 0.0001  # ignored.
 
+# Configuration for distance sensor
 angle_min: -1.5707963267948966
 angle_max: 1.5707963267948966
 range_min: 0.03
-range_max: 0.5  # using 2.5 works as well..
-scan_size: 13
-multicloud_size: 117  # had tried with 180 before. Try with 104 too...
+range_max: 0.5  # Due to inaccurate measurements keep this low.
+scan_size: 13  # Number of measurements per scan
+multicloud_size: 117  # 180 before  # TODO: Try with 104 too... (Multiples of scan_size)
 
+# max gap between segment and landmark (meters).
+# If the gap is greater than the distance, they will not be associated even if they are colinear. (Not v important)
 landmark_max_gap: 0.10
+# Disallowed pose-landmark association; if robot has traveled this far after the landmark is created.
+# Prevent reassociation of similar looking landmarks from far away.
 landmark_max_dist: 1.5
-landmark_assoc_thresh: 0.5
+landmark_assoc_thresh: 0.5  # Epsilon in formula [5] - default is .5 (works well)
 
-# settings for the scan to map matcher
-last_traj_length: 0.4  # used to be .5  # 0.17
+# * Settings for the scan to map matcher
+# Before scan-to-map matching we construct a multiscan from the past trajectory - This is the length of said trajectory
+# ! Should be associated with multicloud size !
+# The larger the value the higher the precision and computation (+ lower recall)
+last_traj_length: 0.4
+# Loop closure threshold - The larger the value the better the precision + computation
 loop_closure_min_score: 0.6
+# See cartographer paper for the below...
+# Enlarge window and increase depth for better recall - but higher computation
+# TODO: Needs tuning
 angular_search_window: 1.57 # radians  # 1.0  # 3.14
 linear_search_window: 0.8 # meters  # 0.5  # 1.5
 branch_and_bound_depth: 5
 
 # settings for the occupancy grid (these affect the map displaying)
+# The higher the value the higher the weight for each scan in the occupancy in the gridmap
 hit_probability: 0.7
 miss_probability: 0.4
 
 # settings for the submap builder
+#
+#
+#
 max_match_distance: 4.75 # meters
 submap_resolution: 0.075 # meters
 submap_trajectory_length: 1.75 # meters  # used to be .75
@@ -35,7 +53,8 @@ submap_overlap_poses: 0 # number of poses  TODO: try 1...
 last_submap_not_match: 0  # could try 2
 loop_closing_threads: 4  # used to be 8; can be 2 as well...
 
-dcs_phi: 10.0
+# See DCS paper on details
+dcs_phi: 1.0  # used to be 10.0
 
 # The interval of loop closures computation. Compute loop closure once every X scans/data frames
 match_interval: 4  # was 2
@@ -43,4 +62,4 @@ data_provider: ev3
 
 # visualization settings
 visualize_rate: 2
-map_resolution: 0.1
+map_resolution: 0.1  # The lower the faster visualization
