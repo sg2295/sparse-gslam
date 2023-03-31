@@ -319,7 +319,6 @@ class EV3DataProvider : public DataProvider {
             size_t mid_idx = static_cast<size_t>((bearing.size() - 1) / 2);
             return (bearing.at(mid_idx) + bearing.at(mid_idx + 1)) / 2;
         }
-        std::cout << "Middle index is: " << static_cast<size_t>((bearing.size() - 1) / 2) << std::endl;
         return bearing.at(static_cast<size_t>((bearing.size() - 1) / 2));
     }
 };
