@@ -190,9 +190,6 @@ int main(int argc, char** argv) {
     };
 
     auto final_cleanup = [&drone, &slam_vis]() {
-        std::cout << "sleeping for cleanup...\n";
-        std::this_thread::sleep_for(std::chrono::seconds(5));
-        std::cout << "starting cleanup...\n";
         // Test to verify our way of saving/loading has no adverse effects...
         // std::cout << "saving landmarks\n";
         // std::cout << "# of landmarks: " <<  drone.lm_graph.landmarks.size() << '\n';
@@ -290,13 +287,11 @@ int main(int argc, char** argv) {
     for (auto end = drone.lm_graph.poses.begin() + drone.loop_closer.last_opt_pose_index; lit != end; lit++, pit++) {
         write_result_odom(outfile, pit->pose.estimate(), lit->odom);
     }
-    std::cout << "Finished writing pose graph data.\n";
     g2o::SE2 base_est = (pit - 1)->pose.estimate();
     for (auto end = drone.lm_graph.poses.end(); lit != end; lit++) {
         base_est *= ((lit - 1)->pose.estimate().inverse() * lit->pose.estimate());
         write_result_odom(outfile, base_est, lit->odom);
     }
-    std::cout << "Finished writing landmark graph data.\n";
     outfile.flush();
 
     std::cout << "Log runner finished. Press Ctrl-C to shutdown" << std::endl;
