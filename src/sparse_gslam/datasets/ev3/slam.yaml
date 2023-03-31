@@ -13,7 +13,7 @@ angle_max: 1.5707963267948966
 range_min: 0.03
 range_max: 0.75  # Due to inaccurate measurements keep this low. # ! Try with 0.5 again...
 scan_size: 13  # Number of measurements per scan
-multicloud_size: 117  # 180 before  # TODO: Try with 104 too... (Multiples of scan_size)  # 117 : 9 poses. 104: 8 poses
+multicloud_size: 104  # 180 before  # TODO: Try with 104 too... (Multiples of scan_size)  # 117 : 9 poses. 104: 8 poses
 
 # max gap between segment and landmark (meters).
 # If the gap is greater than the distance, they will not be associated even if they are colinear. (Not v important)
@@ -30,7 +30,7 @@ landmark_assoc_thresh: 0.5  # Epsilon in formula [5] - default is .5 (works well
 # The larger the value the higher the precision and computation (+ lower recall)
 # ! Should be associated with multicloud size !
 # Make it equal to 2 multiscans; hence 9 poses (max dist covered in one transition=17cm)
-last_traj_length: 1.53
+last_traj_length: 1.36
 # Loop closure threshold - The larger the value the better the precision + computation
 loop_closure_min_score: 0.7  # We used to have .6 before
 # See cartographer paper for the below...  # TODO: Read cartographer guide
@@ -56,11 +56,11 @@ submap_resolution: 0.1 # meters  # ? we had 0.075 before
 # Submap is built from many scans in a given trajectory. X means that each submap is constructed from the past X meters of trajectory
 # The larger the value the more information in the submap hence more potential matches (but also higher computation). Default 6.0 is good.
 # ! This should be related to multiscan size once more !
-submap_trajectory_length: 1.78 # meters  # used to be 1.75  # for 0 overlaps then do 1.53
-# FIXME: Waiting for comment...
-submap_overlap_poses: 1  # Default is 2  # ? Should we do 0 instead?
+submap_trajectory_length: 1.70 # meters  # used to be 1.75  # for 0 overlaps then do 1.53
+# The number of poses shared between two adjacent submaps; allowing adjacent submaps to share information
+submap_overlap_poses: 2  # Default is 2  # ? Should we do 0 instead?
 # Number of recently built maps not matched (only tune when false matches are present - usually for featureless hallways that lead to false matches)
-last_submap_not_match: 0  # Default is 3
+last_submap_not_match: 1  # Default is 3
 loop_closing_threads: 6  # used to be 8; can be 2 as well...
 
 # See DCS paper on details
