@@ -2,6 +2,6 @@ max_line_gap: 0.15  # Max distance between any pair of points on a line segment 
 min_line_length: 0.25  # Min line length allowed  # Default is 0.75
 min_split_dist: 0.2  # If the distance of a point on the line to the line segment is greater than N then split the segment  # Default is 0.1
 outlier_dist: 0.3  # If the distance from a point to any of its two neighbours is greater than N then it's an outlier  # Default is 0.1
-min_line_points: 4  # Minumum number of points for a segment  # Default is 10
+min_line_points: 8  # Minumum number of points for a segment  # Default is 10
 rmse_thresh: 0.1  # Unused
 cluster_threshold: 100.0  # Distance threshold between two clusters (large value disables clustering)
