@@ -17,11 +17,11 @@ multicloud_size: 117  # 180 before  # TODO: Try with 104 too... (Multiples of sc
 
 # max gap between segment and landmark (meters).
 # If the gap is greater than the distance, they will not be associated even if they are colinear. (Not v important)
-landmark_max_gap: 0.2  # Previously 0.05
+landmark_max_gap: 0.2  # Previously 0.05  # TODO: try 0.1
 # Disallowed pose-landmark association; if robot has traveled this far after the landmark is created.
 # Prevent reassociation of similar looking landmarks from far away.
 landmark_max_dist: 2.0
-landmark_assoc_thresh: 0.5  # Epsilon in formula [5] - default is .5 (works well)
+landmark_assoc_thresh: 0.5  # Epsilon in formula [5] - default is .5 (works well)  # TODO: Try altering this threshold
 
 # TODO: Find relationship between scan-to-map and submap builder modules. Do we need scan-to-map params to be smaller than their counter parts?
 
@@ -67,7 +67,7 @@ loop_closing_threads: 6  # used to be 8; can be 2 as well...
 dcs_phi: 1.0
 
 # The interval of loop closures computation. Compute loop closure once every X scans/data frames
-match_interval: 4  # default 10  # we had 5 before
+match_interval: 5  # default 10  # we had 5 before
 data_provider: ev3
 
 # visualization settings
