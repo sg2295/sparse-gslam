@@ -43,14 +43,21 @@ hit_probability: 0.7
 miss_probability: 0.4
 
 # settings for the submap builder
-#
-#
-#
+# Invalidate match (with current multiscan) if the distance to the submap from current pose is larger than the value
+# Mainly for performance optimization (smaller distance reduces number of potential matching submaps)
 max_match_distance: 4.75 # meters
+# Cell size of occupany grid for submap
+# Trade-off between fuzziness and matching accuracy. The higher the value the more fuzzing allowed (hence more matching candidates)
+# 0.1 is typically good for sparse sensing
 submap_resolution: 0.075 # meters
+# Submap is built from many scans in a given trajectory. X means that each submap is constructed from the past X meters of trajectory
+# The larger the value the more information in the submap hence more potential matches (but also higher computation). Default 6.0 is good.
+# ! This should be related to multiscan size once more !
 submap_trajectory_length: 1.75 # meters  # used to be .75
+# FIXME: Waiting for comment...
 submap_overlap_poses: 0 # number of poses  TODO: try 1...
-last_submap_not_match: 0  # could try 2
+# Number of recently built maps not matched (only tune when false matches are present - usually for featureless hallways that lead to false matches)
+last_submap_not_match: 0  # Default is 3
 loop_closing_threads: 4  # used to be 8; can be 2 as well...
 
 # See DCS paper on details
@@ -61,5 +68,5 @@ match_interval: 4  # was 2
 data_provider: ev3
 
 # visualization settings
-visualize_rate: 2
-map_resolution: 0.05  # The lower the faster visualization  0.1
+visualize_rate: 2  # Unused for EV3SLAM
+map_resolution: 0.05  # Default is 0.1
