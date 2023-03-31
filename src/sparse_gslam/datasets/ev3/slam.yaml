@@ -66,7 +66,7 @@ loop_closing_threads: 4  # used to be 8; can be 2 as well...
 dcs_phi: 1.0  # used to be 10.0
 
 # The interval of loop closures computation. Compute loop closure once every X scans/data frames
-match_interval: 4  # default 10  # we had 2 before
+match_interval: 10  # default 10  # we had 2 before
 data_provider: ev3
 
 # visualization settings
