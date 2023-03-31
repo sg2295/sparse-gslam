@@ -37,7 +37,7 @@ loop_closure_min_score: 0.7  # We used to have .6 before
 # Enlarge window and increase depth for better recall - but higher computation
 angular_search_window: 1.0 # radians  # Default is 1.0  # we had 1.57 before
 linear_search_window: 2.5 # meters  # Default is 5  # we had 1.0 before
-branch_and_bound_depth: 5  # Default is 5 ; we had 4 before 8
+branch_and_bound_depth: 4  # Default is 5 ; we had 4 before 8
 
 # settings for the occupancy grid (these affect the map displaying)
 # The higher the value the higher the weight for each scan in the occupancy in the gridmap
@@ -47,7 +47,7 @@ miss_probability: 0.4
 # * Settings for the submap builder
 # Invalidate match (with current multiscan) if the distance to the submap from current pose is larger than the value
 # Mainly for performance optimization (smaller distance reduces number of potential matching submaps)
-max_match_distance: 2.0 # meters  # Default is 5.0
+max_match_distance: 3.0 # meters  # Default is 5.0
 
 # Cell size of occupany grid for submap
 # Trade-off between fuzziness and matching accuracy. The higher the value the more fuzzing allowed (hence more matching candidates)
