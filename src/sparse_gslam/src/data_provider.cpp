@@ -278,9 +278,9 @@ class EV3DataProvider : public DataProvider {
             // 2) N-th value filter (attempt to ignore errors in first readings, susceptible to noise)
             // full_range.at(i) = nth_filter<4>(bearing) / 100;
             // 3) Average filter (incorporates outliers and skews results)
-            full_range.at(i) = average_filter(bearing) / 100;
+            // full_range.at(i) = average_filter(bearing) / 100;
             // 4) Median filter (effectively removes outliers & impulse noise)
-            // full_range.at(i) = median_filter(bearing) / 100;
+            full_range.at(i) = median_filter(bearing) / 100;
             // 5) Kalman filter or Low-pass filter. Requires us to transform into frequency space.
             // std::cout << full_range.at(i) << " ";
         }
