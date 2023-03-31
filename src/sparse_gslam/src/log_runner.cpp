@@ -190,6 +190,8 @@ int main(int argc, char** argv) {
     };
 
     auto final_cleanup = [&drone, &slam_vis]() {
+        std::cout << "Waiting for ROS messages to publish...";
+        std::this_thread::sleep_for(std::chrono::seconds(5));
         // Test to verify our way of saving/loading has no adverse effects...
         // std::cout << "saving landmarks\n";
         // std::cout << "# of landmarks: " <<  drone.lm_graph.landmarks.size() << '\n';
