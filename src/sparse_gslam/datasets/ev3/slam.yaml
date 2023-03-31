@@ -34,8 +34,8 @@ loop_closure_min_score: 0.6
 # See cartographer paper for the below...
 # Enlarge window and increase depth for better recall - but higher computation
 # TODO: Needs tuning
-angular_search_window: 1.57 # radians  # 1.0  # 3.14
-linear_search_window: 0.8 # meters  # 0.5  # 1.5
+angular_search_window: 1.0 # radians  # we had 1.57 before
+linear_search_window: 1.5 # meters  # Default is 5  # we had 0.8 before
 branch_and_bound_depth: 5
 
 # settings for the occupancy grid (these affect the map displaying)
