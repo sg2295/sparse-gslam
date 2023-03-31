@@ -292,22 +292,25 @@ class EV3DataProvider : public DataProvider {
         return total_val / bearing.size();
     }
 
+    // Do moving average filter with a window size of 2?
+
+
     float median_filter(std::array<float, num_readings_per_bearing>& bearing) const {
-    // TODO: Look into optimized sorting networks for # elements <= 10
-    // Use insertion sort since array is small
-    for (size_t i = 1; i < bearing.size(); ++i) {
-        auto temp = bearing.at(i);
-        size_t j = i - 1;
-        while (j != static_cast<size_t>(-1) && bearing.at(j) > temp) {
-            bearing.at(j + 1) = bearing.at(j);
-            j--;
+        // TODO: Look into optimized sorting networks for # elements <= 10
+        // Use insertion sort since array is small
+        for (size_t i = 1; i < bearing.size(); ++i) {
+            auto temp = bearing.at(i);
+            size_t j = i - 1;
+            while (j != static_cast<size_t>(-1) && bearing.at(j) > temp) {
+                bearing.at(j + 1) = bearing.at(j);
+                j--;
+            }
+            bearing.at(j + 1) = temp;
         }
-        bearing.at(j + 1) = temp;
-    }
-    // Get median
-    static_assert(bearing.size() % 2 == 0, "Fix median index calculation");
-    size_t mid_idx = static_cast<size_t>((bearing.size() - 1) / 2);
-    return (bearing.at(mid_idx) + bearing.at(mid_idx + 1)) / 2;
+        // Get median
+        static_assert(bearing.size() % 2 == 0, "Fix median index calculation");
+        size_t mid_idx = static_cast<size_t>((bearing.size() - 1) / 2);
+        return (bearing.at(mid_idx) + bearing.at(mid_idx + 1)) / 2;
     }
 };
 
