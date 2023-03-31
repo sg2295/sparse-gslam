@@ -1,7 +1,7 @@
 address: radio://0/80/2M/E7E7E7E702
 # STD of odometry (meters).  The larger error the smaller the weight (pose-pose constaint)
 std_x: 0.03  # both used to be .03
-std_y: 0.03
+std_y: 1.0
 std_w: 1.0
 # STD of measurements (meters). The larger error the smaller the weight (pose-landmark constraint)
 std_r: 0.01  # The ev3 spec claims a 0.01 resolution https://www.mikrocontroller.net/attachment/338591/hardware_developer_kit.pdf
@@ -63,7 +63,7 @@ last_submap_not_match: 0  # Default is 3
 loop_closing_threads: 4  # used to be 8; can be 2 as well...
 
 # See DCS paper on details
-dcs_phi: 10.0  # used to be 10.0  # ? Used to be 1.0
+dcs_phi: 1.0
 
 # The interval of loop closures computation. Compute loop closure once every X scans/data frames
 match_interval: 2  # default 10  # we had 5 before
