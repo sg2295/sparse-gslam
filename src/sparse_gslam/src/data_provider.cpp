@@ -278,9 +278,9 @@ class EV3DataProvider : public DataProvider {
             // 2) N-th value filter (attempt to ignore errors in first readings, susceptible to noise)
             // full_range.at(i) = nth_filter<4>(bearing) / 100;
             // 3) Average filter (incorporates outliers and skews results)
-            // full_range.at(i) = average_filter(bearing) / 100;
+            full_range.at(i) = average_filter(bearing) / 100;
             // 4) Median filter (effectively removes outliers & impulse noise)
-            full_range.at(i) = median_filter(bearing) / 100;
+            // full_range.at(i) = median_filter(bearing) / 100;
             // 5) Kalman filter or Low-pass filter. Requires us to transform into frequency space.
             // std::cout << full_range.at(i) << " ";
         }
@@ -301,6 +301,8 @@ class EV3DataProvider : public DataProvider {
             total_val += val;
         return total_val / bearing.size();
     }
+
+    // Perhaps combine moving average with median?
 
     float median_filter(std::array<float, num_readings_per_bearing>& bearing) const {
         // TODO: Look into optimized sorting networks for # elements <= 10
