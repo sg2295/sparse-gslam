@@ -10,7 +10,7 @@ angle_max: 1.5707963267948966
 range_min: 0.0
 range_max: 0.5  # using 2.5 works as well..
 scan_size: 13
-multicloud_size: 180  # 110
+multicloud_size: 117  # had tried with 180 before. Try with 104 too...
 
 landmark_max_gap: 0.05
 landmark_max_dist: 2.5
