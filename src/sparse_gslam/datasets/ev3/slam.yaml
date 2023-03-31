@@ -13,7 +13,7 @@ angle_max: 1.5707963267948966
 range_min: 0.03
 range_max: 0.5  # Due to inaccurate measurements keep this low.
 scan_size: 13  # Number of measurements per scan
-multicloud_size: 117  # 180 before  # TODO: Try with 104 too... (Multiples of scan_size)
+multicloud_size: 117  # 180 before  # TODO: Try with 104 too... (Multiples of scan_size)  # 117 : 9 poses. 104: 8 poses
 
 # max gap between segment and landmark (meters).
 # If the gap is greater than the distance, they will not be associated even if they are colinear. (Not v important)
@@ -25,9 +25,10 @@ landmark_assoc_thresh: 0.5  # Epsilon in formula [5] - default is .5 (works well
 
 # * Settings for the scan to map matcher
 # Before scan-to-map matching we construct a multiscan from the past trajectory - This is the length of said trajectory
-# ! Should be associated with multicloud size !
 # The larger the value the higher the precision and computation (+ lower recall)
-last_traj_length: 0.4
+# ! Should be associated with multicloud size !
+# Make it equal to 2 multiscans; hence 9 poses (max dist covered in one transition=17cm)
+last_traj_length: 1.5
 # Loop closure threshold - The larger the value the better the precision + computation
 loop_closure_min_score: 0.6
 # See cartographer paper for the below...
