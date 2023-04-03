@@ -30,7 +30,7 @@ landmark_assoc_thresh: 0.5  # Epsilon in formula [5] - default is .5 (works well
 # The larger the value the higher the precision and computation (+ lower recall)
 # ! Should be associated with multicloud size !
 # Make it equal to 2 multiscans; hence 9 poses (max dist covered in one transition=17cm)
-last_traj_length: 5
+last_traj_length: 5.0
 # Loop closure threshold - The larger the value the better the precision + computation
 loop_closure_min_score: 0.725  # We used to have .6 before
 # See cartographer paper for the below...  # TODO: Read cartographer guide
@@ -63,7 +63,7 @@ last_submap_not_match: 30  # Default is 3
 loop_closing_threads: 8  # used to be 8; can be 2 as well...
 
 # See DCS paper on details
-dcs_phi: 1.0
+dcs_phi: 2.0
 
 # The interval of loop closures computation. Compute loop closure once every X scans/data frames
 match_interval: 10  # default 10  # we had 5 before
