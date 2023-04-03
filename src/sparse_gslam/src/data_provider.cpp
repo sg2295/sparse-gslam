@@ -384,6 +384,7 @@ class ROSBagDataProvider : public DataProvider {
         memcpy(d.range, state2.raw.data(), sizeof(float) * 4);
     }
     bool get_data(double& time, g2o::SE2& pose, std::vector<float>& full_range) {
+        std::cout << "We've got " << data.size() << " entries." << std::endl;
         if (i >= data.size())
             return false;
         time = data[i].time;

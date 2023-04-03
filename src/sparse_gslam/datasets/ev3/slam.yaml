@@ -13,7 +13,7 @@ angle_max: 1.5707963267948966
 range_min: 0.3
 range_max: 10.0  # Due to inaccurate measurements keep this low. # ! Try with 0.5 again...
 scan_size: 13  # Number of measurements per scan
-multicloud_size: 130  # 180 before  # TODO: Try with 104 too... (Multiples of scan_size)  # 117 : 9 poses. 104: 8 poses
+multicloud_size: 143  # 180 before  # TODO: Try with 104 too... (Multiples of scan_size)  # 117 : 9 poses. 104: 8 poses
 
 # max gap between segment and landmark (meters).
 # If the gap is greater than the distance, they will not be associated even if they are colinear. (Not v important)
@@ -57,9 +57,9 @@ submap_resolution: 0.5 # meters  # ? we had 0.075 before
 # ! This should be related to multiscan size once more !
 submap_trajectory_length: 10.0 # meters  # used to be 1.75  # for 0 overlaps then do 1.53
 # The number of poses shared between two adjacent submaps; allowing adjacent submaps to share information
-submap_overlap_poses: 1  # Default is 2  # ? Should we do 0 instead?
+submap_overlap_poses: 2  # Default is 2  # ? Should we do 0 instead?
 # Number of recently built maps not matched (only tune when false matches are present - usually for featureless hallways that lead to false matches)
-last_submap_not_match: 1  # Default is 3
+last_submap_not_match: 0  # Default is 3
 loop_closing_threads: 6  # used to be 8; can be 2 as well...
 
 # See DCS paper on details
