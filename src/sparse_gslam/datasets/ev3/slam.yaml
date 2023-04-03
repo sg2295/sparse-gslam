@@ -1,26 +1,26 @@
 address: radio://0/80/2M/E7E7E7E702
 # STD of odometry (meters).  The larger error the smaller the weight (pose-pose constaint)
-std_x: 0.03  # both used to be .03
+std_x: 0.2
 std_y: 1.0
-std_w: 1.0
+std_w: 2.0
 # STD of measurements (meters). The larger error the smaller the weight (pose-landmark constraint)
-std_r: 0.01  # The ev3 spec claims a 0.01 resolution https://www.mikrocontroller.net/attachment/338591/hardware_developer_kit.pdf
+std_r: 0.1  # The ev3 spec claims a 0.01 resolution https://www.mikrocontroller.net/attachment/338591/hardware_developer_kit.pdf
 std_rpcm: 0.0001  # ignored.
 
 # Configuration for distance sensor
 angle_min: -1.5707963267948966
 angle_max: 1.5707963267948966
-range_min: 0.03
-range_max: 0.75  # Due to inaccurate measurements keep this low. # ! Try with 0.5 again...
+range_min: 0.3
+range_max: 7.5  # Due to inaccurate measurements keep this low. # ! Try with 0.5 again...
 scan_size: 13  # Number of measurements per scan
 multicloud_size: 117  # 180 before  # TODO: Try with 104 too... (Multiples of scan_size)  # 117 : 9 poses. 104: 8 poses
 
 # max gap between segment and landmark (meters).
 # If the gap is greater than the distance, they will not be associated even if they are colinear. (Not v important)
-landmark_max_gap: 0.2  # Previously 0.05  # TODO: try 0.1
+landmark_max_gap: 5.0  # Previously 0.05  # TODO: try 0.1
 # Disallowed pose-landmark association; if robot has traveled this far after the landmark is created.
 # Prevent reassociation of similar looking landmarks from far away.
-landmark_max_dist: 2.0
+landmark_max_dist: 10.0
 landmark_assoc_thresh: 0.5  # Epsilon in formula [5] - default is .5 (works well)  # TODO: Try altering this threshold
 
 # TODO: Find relationship between scan-to-map and submap builder modules. Do we need scan-to-map params to be smaller than their counter parts?
@@ -30,14 +30,14 @@ landmark_assoc_thresh: 0.5  # Epsilon in formula [5] - default is .5 (works well
 # The larger the value the higher the precision and computation (+ lower recall)
 # ! Should be associated with multicloud size !
 # Make it equal to 2 multiscans; hence 9 poses (max dist covered in one transition=17cm)
-last_traj_length: 1.58
+last_traj_length: 5
 # Loop closure threshold - The larger the value the better the precision + computation
-loop_closure_min_score: 0.7  # We used to have .6 before
+loop_closure_min_score: 0.725  # We used to have .6 before
 # See cartographer paper for the below...  # TODO: Read cartographer guide
 # Enlarge window and increase depth for better recall - but higher computation
-angular_search_window: 1.0 # radians  # Default is 1.0  # we had 1.57 before
-linear_search_window: 2.5 # meters  # Default is 5  # we had 1.0 before
-branch_and_bound_depth: 4  # Default is 5 ; we had 4 before 8
+angular_search_window: 1.5 # radians  # Default is 1.0  # we had 1.57 before
+linear_search_window: 5.0 # meters  # Default is 5  # we had 1.0 before
+branch_and_bound_depth: 5  # Default is 5 ; we had 4 before 8
 
 # settings for the occupancy grid (these affect the map displaying)
 # The higher the value the higher the weight for each scan in the occupancy in the gridmap
@@ -47,8 +47,7 @@ miss_probability: 0.4
 # * Settings for the submap builder
 # Invalidate match (with current multiscan) if the distance to the submap from current pose is larger than the value
 # Mainly for performance optimization (smaller distance reduces number of potential matching submaps)
-max_match_distance: 3.0 # meters  # Default is 5.0
-
+max_match_distance: 60.0 # meters  # Default is 5.0
 # Cell size of occupany grid for submap
 # Trade-off between fuzziness and matching accuracy. The higher the value the more fuzzing allowed (hence more matching candidates)
 # 0.1 is typically good for sparse sensing
@@ -56,18 +55,18 @@ submap_resolution: 0.1 # meters  # ? we had 0.075 before
 # Submap is built from many scans in a given trajectory. X means that each submap is constructed from the past X meters of trajectory
 # The larger the value the more information in the submap hence more potential matches (but also higher computation). Default 6.0 is good.
 # ! This should be related to multiscan size once more !
-submap_trajectory_length: 1.78 # meters  # used to be 1.75  # for 0 overlaps then do 1.53
+submap_trajectory_length: 6.0 # meters  # used to be 1.75  # for 0 overlaps then do 1.53
 # The number of poses shared between two adjacent submaps; allowing adjacent submaps to share information
-submap_overlap_poses: 1  # Default is 2  # ? Should we do 0 instead?
+submap_overlap_poses: 2  # Default is 2  # ? Should we do 0 instead?
 # Number of recently built maps not matched (only tune when false matches are present - usually for featureless hallways that lead to false matches)
-last_submap_not_match: 0  # Default is 3
-loop_closing_threads: 6  # used to be 8; can be 2 as well...
+last_submap_not_match: 30  # Default is 3
+loop_closing_threads: 8  # used to be 8; can be 2 as well...
 
 # See DCS paper on details
 dcs_phi: 1.0
 
 # The interval of loop closures computation. Compute loop closure once every X scans/data frames
-match_interval: 5  # default 10  # we had 5 before
+match_interval: 10  # default 10  # we had 5 before
 data_provider: ev3
 
 # visualization settings

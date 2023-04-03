@@ -254,7 +254,7 @@ class EV3DataProvider : public DataProvider {
     double prev_time = 0;
     static unsigned constexpr num_readings = 13;
     static unsigned constexpr num_readings_per_bearing = 25;
-    static unsigned constexpr scaling = 100;
+    static unsigned constexpr scaling = 10;  // 100;
 
    public:
     EV3DataProvider(const std::string& fpath) : log_file(fpath) {}
