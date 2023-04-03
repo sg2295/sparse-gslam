@@ -283,9 +283,9 @@ class EV3DataProvider : public DataProvider {
             // 4) Median filter (effectively removes outliers & impulse noise)
             full_range.at(i) = median_filter(bearing) / scaling;
             // 5) Kalman filter or Low-pass filter. Requires us to transform into frequency space.
-            // std::cout << full_range.at(i) << " ";
+            std::cout << full_range.at(i) << " ";
         }
-        // std::cout << std::endl;
+        std::cout << std::endl;
         time = prev_time++;
         return true;
     }
