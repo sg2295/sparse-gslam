@@ -266,7 +266,7 @@ class EV3DataProvider : public DataProvider {
         for (size_t i = 0; i < pose_data.size(); ++i)
             iss >> pose_data.at(i);
         pose = g2o::SE2(pose_data.at(0) / scaling, pose_data.at(1) / scaling, pose_data.at(2));
-        std::cout << pose_data.at(0) / scaling << ", " << pose_data.at(1) / scaling << ", " << pose_data.at(2) << ": ";
+        // std::cout << pose_data.at(0) / scaling << ", " << pose_data.at(1) / scaling << ", " << pose_data.at(2) << ": ";
 
         full_range.resize(num_readings);
         for (size_t i = 0; i < num_readings; ++i) {
@@ -283,10 +283,11 @@ class EV3DataProvider : public DataProvider {
             // 4) Median filter (effectively removes outliers & impulse noise)
             full_range.at(i) = median_filter(bearing) / scaling;
             // 5) Kalman filter or Low-pass filter. Requires us to transform into frequency space.
-            std::cout << full_range.at(i) << " ";
+            // std::cout << full_range.at(i) << " ";
         }
-        std::cout << std::endl;
+        // std::cout << std::endl;
         time = prev_time++;
+        std::cout << "Read: " << prev_time << " lines" << std::endl;
         return true;
     }
    private:
