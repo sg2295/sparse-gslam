@@ -286,7 +286,8 @@ class EV3DataProvider : public DataProvider {
             // std::cout << full_range.at(i) << " ";
         }
         // std::cout << std::endl;
-        time = prev_time++;
+        time = prev_time;
+        prev_time += 1.0;
         std::cout << "Read: " << prev_time << " lines" << std::endl;
         return true;
     }

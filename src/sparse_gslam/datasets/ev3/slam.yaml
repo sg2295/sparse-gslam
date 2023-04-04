@@ -11,13 +11,13 @@ std_rpcm: 0.0001  # ignored.
 angle_min: -1.5707963267948966
 angle_max: 1.5707963267948966
 range_min: 0.3
-range_max: 10.0  # Due to inaccurate measurements keep this low. # ! Try with 0.5 again...
+range_max: 8.0  # Due to inaccurate measurements keep this low. # ! Try with 0.5 again...
 scan_size: 13  # Number of measurements per scan
 multicloud_size: 143  # 180 before  # TODO: Try with 104 too... (Multiples of scan_size)  # 117 : 9 poses. 104: 8 poses
 
-# max gap between segment and landmark (meters).
+# Max gap between segment and landmark (meters)
 # If the gap is greater than the distance, they will not be associated even if they are colinear. (Not v important)
-landmark_max_gap: 2.0  # Previously 0.05  # TODO: try 0.1
+landmark_max_gap: 2.0
 # Disallowed pose-landmark association; if robot has traveled this far after the landmark is created.
 # Prevent reassociation of similar looking landmarks from far away.
 landmark_max_dist: 5.0
@@ -33,7 +33,7 @@ landmark_assoc_thresh: 0.5  # Epsilon in formula [5] - default is .5 (works well
 last_traj_length: 10.0
 # Loop closure threshold - The larger the value the better the precision + computation
 loop_closure_min_score: 0.6  # We used to have .6 before
-# See cartographer paper for the below...  # TODO: Read cartographer guide
+# See cartographer paper for the below...
 # Enlarge window and increase depth for better recall - but higher computation
 angular_search_window: 1.5 # radians  # Default is 1.0  # we had 1.57 before
 linear_search_window: 5.0 # meters  # Default is 5  # we had 1.0 before
@@ -66,7 +66,7 @@ loop_closing_threads: 6  # used to be 8; can be 2 as well...
 dcs_phi: 10.0
 
 # The interval of loop closures computation. Compute loop closure once every X scans/data frames
-match_interval: 2  # default 10  # we had 5 before
+match_interval: 10  # default 10
 data_provider: ev3
 
 # visualization settings
