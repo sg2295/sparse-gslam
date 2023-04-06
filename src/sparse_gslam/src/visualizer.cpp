@@ -166,19 +166,19 @@ struct Visualizer::Impl {
 #endif
     sensor::RangeData2D o_range, l_range, p_range;
     nav_msgs::OccupancyGrid o_grid_msg, l_grid_msg, p_grid_msg;
-    ros::Publisher o_grid_pub, l_grid_pub, p_grid_pub;
+    ros::Publisher /* o_grid_pub,*/ l_grid_pub, p_grid_pub;
 
     visualization_msgs::Marker landmark_marker, edge_marker;
     ros::Publisher landmark_marker_pub, edge_marker_pub;
 
-    visualization_msgs::Marker closure_marker, false_closure_marker, false_candidate_marker;
-    ros::Publisher closure_pub, false_closure_pub, false_candidate_pub;
+    // visualization_msgs::Marker closure_marker, false_closure_marker, false_candidate_marker;
+    // ros::Publisher closure_pub, false_closure_pub, false_candidate_pub;
 
-    geometry_msgs::PoseArray odom_poses, lm_poses, pg_poses;
-    ros::Publisher odom_poses_pub, lm_poses_pub, pg_poses_pub;
+    geometry_msgs::PoseArray /*odom_poses,*/ lm_poses, pg_poses;
+    ros::Publisher /* odom_poses_pub,*/ lm_poses_pub, pg_poses_pub;
 
-    visualization_msgs::Marker match_submap_marker;
-    ros::Publisher match_submap_pub;
+    // visualization_msgs::Marker match_submap_marker;
+    // ros::Publisher match_submap_pub;
 
     std::array<ros::Publisher, 8> submaps_pub;
 
@@ -192,31 +192,30 @@ struct Visualizer::Impl {
                                               l_grid(mapping::MapLimits(config["map_resolution"], Eigen::Vector2d(4., 4.), mapping::CellLimits(160, 160)), &conversion_table),
                                               p_grid(mapping::MapLimits(config["map_resolution"], Eigen::Vector2d(4., 4.), mapping::CellLimits(160, 160)), &conversion_table),
 #else
-                                              // TODO: What does hit_probability/miss_probability do? Do we need these if we're not
-                                              //       running a simulation?
                                               inserter((double)config["hit_probability"], (double)config["miss_probability"]),
 #endif
-                                              o_grid_pub(nh.advertise<nav_msgs::OccupancyGrid>("/odom_map", 5)),
-                                              l_grid_pub(nh.advertise<nav_msgs::OccupancyGrid>("/landmark_map", 5)),
-                                              p_grid_pub(nh.advertise<nav_msgs::OccupancyGrid>("/pose_map", 5)),
-                                              landmark_marker_pub(nh.advertise<visualization_msgs::Marker>("/landmarks", 5)),
-                                              edge_marker_pub(nh.advertise<visualization_msgs::Marker>("/graph_edges", 1)),
-                                              closure_pub(nh.advertise<visualization_msgs::Marker>("/loop_closures", 1)),
-                                              false_closure_pub(nh.advertise<visualization_msgs::Marker>("/false_loop_closures", 1)),
-                                              false_candidate_pub(nh.advertise<visualization_msgs::Marker>("/false_candidates", 1)),
-                                              odom_poses_pub(nh.advertise<geometry_msgs::PoseArray>("odom_poses", 1)),
-                                              lm_poses_pub(nh.advertise<geometry_msgs::PoseArray>("landmark_poses", 1)),
-                                              pg_poses_pub(nh.advertise<geometry_msgs::PoseArray>("pose_graph_poses", 1)),
-                                              match_submap_pub(nh.advertise<visualization_msgs::Marker>("/match_submap", 1)) {
+                                            //   o_grid_pub(nh.advertise<nav_msgs::OccupancyGrid>("/odom_map", 5)),
+                                              l_grid_pub(nh.advertise<nav_msgs::OccupancyGrid>("/landmark_map", 5)),  // !
+                                              p_grid_pub(nh.advertise<nav_msgs::OccupancyGrid>("/pose_map", 5)),  // !
+                                              landmark_marker_pub(nh.advertise<visualization_msgs::Marker>("/landmarks", 5)),  // !
+                                              edge_marker_pub(nh.advertise<visualization_msgs::Marker>("/graph_edges", 1)),  // !
+                                            //   closure_pub(nh.advertise<visualization_msgs::Marker>("/loop_closures", 1)),  // no
+                                            //   false_closure_pub(nh.advertise<visualization_msgs::Marker>("/false_loop_closures", 1)), // no
+                                            //   false_candidate_pub(nh.advertise<visualization_msgs::Marker>("/false_candidates", 1)),  // no
+                                            //   odom_poses_pub(nh.advertise<geometry_msgs::PoseArray>("odom_poses", 1)),  // no
+                                              lm_poses_pub(nh.advertise<geometry_msgs::PoseArray>("landmark_poses", 1)),  // !
+                                              pg_poses_pub(nh.advertise<geometry_msgs::PoseArray>("pose_graph_poses", 1))  // !
+                                            //   match_submap_pub(nh.advertise<visualization_msgs::Marker>("/match_submap", 1)) {  // no
+                                              {
         for (int i = 0; i < submaps_pub.size(); i++) {
             submaps_pub[i] = nh.advertise<nav_msgs::OccupancyGrid>("submap" + std::to_string(i + 1), 1);
         }
 
         landmark_marker.header.frame_id = edge_marker.header.frame_id =
-            closure_marker.header.frame_id = false_closure_marker.header.frame_id =
-                false_candidate_marker.header.frame_id = match_submap_marker.header.frame_id =
-                    odom_poses.header.frame_id = lm_poses.header.frame_id =
-                        pg_poses.header.frame_id = "map";
+            // closure_marker.header.frame_id = false_closure_marker.header.frame_id =
+                // false_candidate_marker.header.frame_id = //  match_submap_marker.header.frame_id =
+                    // odom_poses.header.frame_id =
+                    lm_poses.header.frame_id = pg_poses.header.frame_id = "map";
 
         o_grid_msg.info.resolution = (double)config["map_resolution"];
         o_grid_msg.info.origin.orientation.w = 1.0;
@@ -252,46 +251,46 @@ struct Visualizer::Impl {
         edge_marker.color.g = 0.5;
         edge_marker.color.a = 1.0;
 
-        closure_marker.ns = "closure";
-        closure_marker.id = 1;
-        closure_marker.type = visualization_msgs::Marker::LINE_LIST;
-        closure_marker.scale.x = 0.1;
-        closure_marker.pose.orientation.w = 1.0;
-        closure_marker.color.g = 1.0;
-        closure_marker.color.a = 1.0;
+        // closure_marker.ns = "closure";
+        // closure_marker.id = 1;
+        // closure_marker.type = visualization_msgs::Marker::LINE_LIST;
+        // closure_marker.scale.x = 0.1;
+        // closure_marker.pose.orientation.w = 1.0;
+        // closure_marker.color.g = 1.0;
+        // closure_marker.color.a = 1.0;
 
-        false_closure_marker.ns = "false_closure";
-        false_closure_marker.id = 1;
-        false_closure_marker.type = visualization_msgs::Marker::LINE_LIST;
-        false_closure_marker.scale.x = 0.1;
-        false_closure_marker.pose.orientation.w = 1.0;
-        false_closure_marker.color.r = 1.0;
-        false_closure_marker.color.a = 1.0;
+        // false_closure_marker.ns = "false_closure";
+        // false_closure_marker.id = 1;
+        // false_closure_marker.type = visualization_msgs::Marker::LINE_LIST;
+        // false_closure_marker.scale.x = 0.1;
+        // false_closure_marker.pose.orientation.w = 1.0;
+        // false_closure_marker.color.r = 1.0;
+        // false_closure_marker.color.a = 1.0;
 
-        false_candidate_marker.ns = "false_candidate_marker";
-        false_candidate_marker.id = 1;
-        false_candidate_marker.type = visualization_msgs::Marker::LINE_LIST;
-        false_candidate_marker.scale.x = 0.1;
-        false_candidate_marker.pose.orientation.w = 1.0;
-        false_candidate_marker.color.b = 1.0;
-        false_candidate_marker.color.a = 1.0;
+        // false_candidate_marker.ns = "false_candidate_marker";
+        // false_candidate_marker.id = 1;
+        // false_candidate_marker.type = visualization_msgs::Marker::LINE_LIST;
+        // false_candidate_marker.scale.x = 0.1;
+        // false_candidate_marker.pose.orientation.w = 1.0;
+        // false_candidate_marker.color.b = 1.0;
+        // false_candidate_marker.color.a = 1.0;
 
-        match_submap_marker.ns = "match_submap";
-        match_submap_marker.id = 1;
-        match_submap_marker.type = visualization_msgs::Marker::POINTS;
-        match_submap_marker.scale.x = 0.4;
-        match_submap_marker.scale.y = 0.4;
-        match_submap_marker.scale.z = 0.4;
-        match_submap_marker.pose.orientation.w = 1.0;
-        match_submap_marker.color.b = 1.0;
-        match_submap_marker.color.a = 1.0;
+        // match_submap_marker.ns = "match_submap";
+        // match_submap_marker.id = 1;
+        // match_submap_marker.type = visualization_msgs::Marker::POINTS;
+        // match_submap_marker.scale.x = 0.4;
+        // match_submap_marker.scale.y = 0.4;
+        // match_submap_marker.scale.z = 0.4;
+        // match_submap_marker.pose.orientation.w = 1.0;
+        // match_submap_marker.color.b = 1.0;
+        // match_submap_marker.color.a = 1.0;
     }
     void visualize_landmarks(const ros::Time &stamp) {
         landmark_marker.header.stamp = edge_marker.header.stamp =
-            closure_marker.header.stamp = false_closure_marker.header.stamp =
-                false_candidate_marker.header.stamp = match_submap_marker.header.stamp =
-                    odom_poses.header.stamp = lm_poses.header.stamp =
-                        pg_poses.header.stamp = stamp;
+            // closure_marker.header.stamp = false_closure_marker.header.stamp =
+                // false_candidate_marker.header.stamp = // match_submap_marker.header.stamp =
+                    // odom_poses.header.stamp =
+                    lm_poses.header.stamp = pg_poses.header.stamp = stamp;
         landmark_marker.points.clear();
         edge_marker.points.clear();
         o_range.clear();
@@ -317,12 +316,12 @@ struct Visualizer::Impl {
                     eigen_to_point(midpoint, edge_marker.points.back());
                 }
             }
-            match_submap_marker.points.clear();
-            for (const auto &info : drone.loop_closer.submaps_info) {
-                match_submap_marker.points.emplace_back();
-                match_submap_marker.points.back().x = info.x;
-                match_submap_marker.points.back().y = info.y;
-            }
+            // match_submap_marker.points.clear();
+            // for (const auto &info : drone.loop_closer.submaps_info) {
+            //     match_submap_marker.points.emplace_back();
+            //     match_submap_marker.points.back().x = info.x;
+            //     match_submap_marker.points.back().y = info.y;
+            // }
 #if defined(VISUALIZE_SUBMAP) || defined(SHOW_MATCH)
             int last_submaps_to_pub = std::min((int)submaps_pub.size(), (int)drone.loop_closer.submaps.size() - 1);
             if (last_submaps_to_pub > 0 && drone.lm_graph.poses.size() > 2) {
@@ -338,14 +337,14 @@ struct Visualizer::Impl {
             }
 #endif
             boost::shared_lock<boost::shared_mutex> pose_lock(drone.pose_graph.mu);
-            visualize_closures(drone.pose_graph.closures, closure_marker);
-            visualize_closures(drone.pose_graph.false_closures, false_closure_marker);
-            visualize_closures(drone.pose_graph.false_candidates, false_candidate_marker);
+            // visualize_closures(drone.pose_graph.closures, closure_marker);
+            // visualize_closures(drone.pose_graph.false_closures, false_closure_marker);
+            // visualize_closures(drone.pose_graph.false_candidates, false_candidate_marker);
 
             if (drone.lm_graph.poses.size() >= 2) {
 #ifdef SHOW_RAW_ODOM
-                odom_poses.poses.resize(drone.lm_graph.poses.size());
-                auto it0 = odom_poses.poses.begin();
+                // odom_poses.poses.resize(drone.lm_graph.poses.size());
+                // auto it0 = odom_poses.poses.begin();
 #endif
                 lm_poses.poses.resize(drone.lm_graph.poses.size());
                 auto it1 = lm_poses.poses.begin();
@@ -406,8 +405,8 @@ struct Visualizer::Impl {
 #endif
         // std::cout << "map conv time: " << ros::Time::now().toSec() - start << std::endl;
 #ifdef SHOW_RAW_ODOM
-        o_grid_pub.publish(o_grid_msg);
-        odom_poses_pub.publish(odom_poses);
+        // o_grid_pub.publish(o_grid_msg);
+        // odom_poses_pub.publish(odom_poses);
 #endif
         p_grid_pub.publish(p_grid_msg);
         pg_poses_pub.publish(pg_poses);
@@ -418,10 +417,10 @@ struct Visualizer::Impl {
         landmark_marker_pub.publish(landmark_marker);
         edge_marker_pub.publish(edge_marker);
 
-        closure_pub.publish(closure_marker);
-        false_closure_pub.publish(false_closure_marker);
-        false_candidate_pub.publish(false_candidate_marker);
-        match_submap_pub.publish(match_submap_marker);
+        // closure_pub.publish(closure_marker);
+        // false_closure_pub.publish(false_closure_marker);
+        // false_candidate_pub.publish(false_candidate_marker);
+        // match_submap_pub.publish(match_submap_marker);
     }
 
     void start(int rate) {
