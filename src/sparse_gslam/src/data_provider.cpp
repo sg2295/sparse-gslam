@@ -274,9 +274,8 @@ class EV3DataProvider : public DataProvider {
             for (size_t j = 0; j < num_readings_per_bearing; ++j)
                 iss >> bearing.at(j);
             // ! Choose what filtering method we will use !
-            // 1) No filter (use the first data point, susceptible to noise)
-            // full_range.at(i) = bearing.at(i) / scaling;
-            // 2) N-th value filter (attempt to ignore errors in first readings, susceptible to noise)
+            // 1) N-th value filter (get 1st entry, susceptible to noise)
+            // 2) N-th value filter (get 25th entry, susceptible to noise)
             // full_range.at(i) = nth_filter<4>(bearing) / scaling;
             // 3) Average filter (incorporates outliers and skews results)
             // full_range.at(i) = average_filter(bearing) / scaling;
@@ -308,7 +307,6 @@ class EV3DataProvider : public DataProvider {
     // Perhaps combine moving average with median?
 
     float median_filter(std::array<float, num_readings_per_bearing>& bearing) const {
-        // TODO: Look into optimized sorting networks for # elements <= 10
         // Use insertion sort since array is small
         for (size_t i = 1; i < bearing.size(); ++i) {
             auto temp = bearing.at(i);
@@ -328,6 +326,8 @@ class EV3DataProvider : public DataProvider {
     }
 
     float gaussian_filter(std::array<float, num_readings_per_bearing>& bearing) const {
+        unsigned constexpr std = 2;  // TODO: What size do we want?...
+        unsigned constexpr kernel_size = 13;  // This is a function of std
         return bearing.at(0);  // TODO: Fill in
     }
 };
