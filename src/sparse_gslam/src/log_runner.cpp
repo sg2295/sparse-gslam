@@ -21,22 +21,22 @@
 using namespace std::chrono;
 constexpr float NaN = std::numeric_limits<float>().quiet_NaN();
 
-inline void write_result_line(std::ofstream& file, const g2o::SE2& estimate, double time) {
-    double x = estimate[0];
-    double y = estimate[1];
-    double theta = estimate[2];
-    file << "FLASER 0 " << x << ' ' << y << ' ' << theta << ' ' << x << ' ' << y << ' ' << theta << ' ' << time << " myhost " << time << '\n';
-}
+// inline void write_result_line(std::ofstream& file, const g2o::SE2& estimate, double time) {
+//     double x = estimate[0];
+//     double y = estimate[1];
+//     double theta = estimate[2];
+//     file << "FLASER 0 " << x << ' ' << y << ' ' << theta << ' ' << x << ' ' << y << ' ' << theta << ' ' << time << " myhost " << time << '\n';
+// }
 
-void write_result_odom(std::ofstream& file, const g2o::SE2& base_est, const DeltaVector& odom) {
-    auto it = odom.begin();
-    write_result_line(file, base_est, it->dt);
-    it++;
-    for (; it != odom.end(); it++) {
-        auto estimate = base_est * it->dpose;
-        write_result_line(file, estimate, it->dt);
-    }
-}
+// void write_result_odom(std::ofstream& file, const g2o::SE2& base_est, const DeltaVector& odom) {
+//     auto it = odom.begin();
+//     write_result_line(file, base_est, it->dt);
+//     it++;
+//     for (; it != odom.end(); it++) {
+//         auto estimate = base_est * it->dpose;
+//         write_result_line(file, estimate, it->dt);
+//     }
+// }
 
 void dump_to_file(Drone& drone) {
     // To visualize stuff, we need:
@@ -115,12 +115,12 @@ int main(int argc, char** argv) {
     // std::ofstream frontend_time(dataset_dir + dataset_name + ".ftime");
     // std::ofstream backend_time(dataset_dir + dataset_name + ".btime");
     // std::ofstream dataset_time(dataset_dir + dataset_name + ".dtime");
-    std::ofstream outfile(dataset_dir + dataset_name + ".result");
+    // std::ofstream outfile(dataset_dir + dataset_name + ".result");
 
     // frontend_time << std::fixed;
     // backend_time << std::fixed;
     // dataset_time << std::fixed;
-    outfile << std::fixed;
+    // outfile << std::fixed;
 
     auto callback = [&](int k) {
         odometry.header.stamp = ros::Time(time);
@@ -275,15 +275,15 @@ int main(int argc, char** argv) {
 
     auto lit = drone.lm_graph.poses.begin();
     auto pit = drone.pose_graph.poses.begin();
-    for (auto end = drone.lm_graph.poses.begin() + drone.loop_closer.last_opt_pose_index; lit != end; lit++, pit++) {
-        write_result_odom(outfile, pit->pose.estimate(), lit->odom);
-    }
-    g2o::SE2 base_est = (pit - 1)->pose.estimate();
-    for (auto end = drone.lm_graph.poses.end(); lit != end; lit++) {
-        base_est *= ((lit - 1)->pose.estimate().inverse() * lit->pose.estimate());
-        write_result_odom(outfile, base_est, lit->odom);
-    }
-    outfile.flush();
+    // for (auto end = drone.lm_graph.poses.begin() + drone.loop_closer.last_opt_pose_index; lit != end; lit++, pit++) {
+    //     write_result_odom(outfile, pit->pose.estimate(), lit->odom);
+    // }
+    // g2o::SE2 base_est = (pit - 1)->pose.estimate();
+    // for (auto end = drone.lm_graph.poses.end(); lit != end; lit++) {
+    //     base_est *= ((lit - 1)->pose.estimate().inverse() * lit->pose.estimate());
+    //     write_result_odom(outfile, base_est, lit->odom);
+    // }
+    // outfile.flush();
 
     std::cout << "Log runner finished. Press Ctrl-C to shutdown" << std::endl;
 /*
