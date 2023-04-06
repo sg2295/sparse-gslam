@@ -130,12 +130,11 @@ int main(int argc, char** argv) {
         odometry.pose.pose.position.z = 0.0;
         tf::quaternionTFToMsg(current_scan_tf.getRotation(), odometry.pose.pose.orientation);
 
-        int full_size = full_range.size();
-        full_scan.angle_increment = (full_scan.angle_max - full_scan.angle_min) / (full_size - 1);
-        if (sample_size == full_size) {
+        full_scan.angle_increment = (full_scan.angle_max - full_scan.angle_min) / (full_range.size() - 1);
+        if (sample_size == full_range.size()) {
             memcpy(pc_converter.scan.ranges.data(), full_range.data(), sample_size * sizeof(float));
         } else {
-            int increment = full_size / (sample_size - 1);
+            int increment = full_range.size() / (sample_size - 1);
             for (int j = 0, i = 0; j < sample_size - 1; j++, i += increment) {
                 pc_converter.scan.ranges[j] = std::min(full_range[i], range_max);
                 float angle = pc_converter.scan.angle_min + full_scan.angle_increment * i;
@@ -262,8 +261,8 @@ int main(int argc, char** argv) {
     // backend_time.flush();
     // dataset_time.flush();
 
-    auto lit = drone.lm_graph.poses.begin();
-    auto pit = drone.pose_graph.poses.begin();
+    // auto lit = drone.lm_graph.poses.begin();
+    // auto pit = drone.pose_graph.poses.begin();
     // for (auto end = drone.lm_graph.poses.begin() + drone.loop_closer.last_opt_pose_index; lit != end; lit++, pit++) {
     //     write_result_odom(outfile, pit->pose.estimate(), lit->odom);
     // }
