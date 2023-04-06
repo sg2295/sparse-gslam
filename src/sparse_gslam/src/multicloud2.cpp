@@ -89,7 +89,7 @@ bool MulticloudConverter::update(const ros::Time& stamp, const DeltaVector& delt
         temp_bl_cloud.height = 1;
         pcl::toROSMsg(temp_bl_cloud, mc_msg);
         mc_msg.header.stamp = stamp;
-        mc_pub.publish(mc_msg);
+        // mc_pub.publish(mc_msg);
         return true;
     }
     return false;
