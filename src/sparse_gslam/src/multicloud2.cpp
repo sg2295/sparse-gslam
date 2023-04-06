@@ -12,7 +12,7 @@ MulticloudConverter::MulticloudConverter(ros::NodeHandle& nh,
                                                                               mc_window_size(config["multicloud_size"]),
                                                                               var_r(std::pow(config["std_r"], 2.0)),
                                                                               scan_pub(nh.advertise<sensor_msgs::LaserScan>("scan", 2)),
-                                                                              mc_pub(nh.advertise<sensor_msgs::PointCloud2>("multicloud", 2)),
+                                                                            //   mc_pub(nh.advertise<sensor_msgs::PointCloud2>("multicloud", 2)),
                                                                               odom_prop(static_cast<double>(config["std_x"]), static_cast<double>(config["std_y"]), static_cast<double>(config["std_w"])),
                                                                               table(scan_size) {
     temp_bl_cloud.header.frame_id = multicloud.header.frame_id

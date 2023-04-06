@@ -15,7 +15,7 @@ class MulticloudConverter {
     const int scan_size, mc_window_size;
     const float var_r;
 
-    ros::Publisher scan_pub, mc_pub, mc_cov_pub;
+    ros::Publisher scan_pub, /* mc_pub*/ mc_cov_pub;
     sensor_msgs::PointCloud2 mc_msg;
     pcl::PointCloud<pcl::PointXYZ> multicloud, temp_cloud, temp_bl_cloud;
     OdomErrorPropagator<float> odom_prop;
