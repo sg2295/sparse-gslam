@@ -7,7 +7,7 @@ project(Project)
 
 set(CATKIN_TOPLEVEL TRUE)
 
-add_compile_options(-Os -s -DNDEBUG) # -flto)  # -march=native -mtune=native)
+add_compile_options(-Os -s -DNDEBUG -march=native -mtune=native) # -flto)  #
 
 # search for catkin within the workspace
 set(_cmd "catkin_find_pkg" "catkin" "${CMAKE_SOURCE_DIR}")
