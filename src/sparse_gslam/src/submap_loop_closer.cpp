@@ -148,9 +148,9 @@ bool SubmapLoopCloser::match() {
         auto map_pose = it->pose->id() < drone.loop_closer.last_opt_pose_index ? static_cast<g2o::VertexSE2*>(drone.pose_graph.opt.vertex(it->pose->id()))->estimate() : trans_pre * it->pose->estimate();
         if ((bl_trans.translation() - map_pose.translation()).norm() >= max_match_distance)
             continue;
-        submaps_info.push_back({(float)map_pose[0],
-                                (float)map_pose[1],
-                                (float)map_pose[2],
+        submaps_info.push_back({static_cast<float>(map_pose[0]),
+                                static_cast<float>(map_pose[1]),
+                                static_cast<float>(map_pose[2]),
                                 &(*it)});
     }
     // -------------- end ---------------------------------------------------------------

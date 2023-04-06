@@ -437,8 +437,8 @@ PrecomputationGrid2D::PrecomputationGrid2D(
   }
   // auto in = cells_;
   // Eigen::Matrix3f kernel;
-  // kernel << 1/16.f, 1/8.f, 1/16.f, 
-  //   1/8.f, 1/4.f, 1/8.f, 
+  // kernel << 1/16.f, 1/8.f, 1/16.f,
+  //   1/8.f, 1/4.f, 1/8.f,
   //   1/16.f, 1/8.f, 1/16.f;
   // convolve2DFast(in.data(), cells_.data(), wide_limits_.num_x_cells, wide_limits_.num_y_cells, kernel.data(), 3, 3);
 }
@@ -533,12 +533,12 @@ bool FastCorrelativeScanMatcher2D::MatchWithSearchParameters(
     *pose_estimate = transform::Rigid2d(
         initial_pose_estimate.translation() + pose.head<2>(),
         initial_rotation * Eigen::Rotation2Dd(pose[2]));
-    
+
     Eigen::Matrix3d K = Eigen::Matrix3d::Zero();
     Eigen::Vector3d u = Eigen::Vector3d::Zero();
     double s = 0.0;
     constexpr int w_size = 5;
-    const int scan_window = std::min(w_size, std::min(best_candidate.scan_index, (int)discrete_scans.size() - 1 - best_candidate.scan_index));
+    const int scan_window = std::min(w_size, std::min(best_candidate.scan_index, static_cast<int>(discrete_scans.size()) - 1 - best_candidate.scan_index));
     const auto& grid = precomputation_grid_stack_->Get(0);
     for (int i = best_candidate.x_index_offset - w_size; i <= best_candidate.x_index_offset + w_size; i++) {
       for (int j = best_candidate.y_index_offset - w_size; j <= best_candidate.y_index_offset + w_size; j++) {

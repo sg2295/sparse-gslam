@@ -13,14 +13,14 @@ MulticloudConverter::MulticloudConverter(ros::NodeHandle& nh,
                                                                               var_r(std::pow(config["std_r"], 2.0)),
                                                                               scan_pub(nh.advertise<sensor_msgs::LaserScan>("scan", 2)),
                                                                               mc_pub(nh.advertise<sensor_msgs::PointCloud2>("multicloud", 2)),
-                                                                              odom_prop((double)config["std_x"], (double)config["std_y"], (double)config["std_w"]),
+                                                                              odom_prop(static_cast<double>(config["std_x"]), static_cast<double>(config["std_y"]), static_cast<double>(config["std_w"])),
                                                                               table(scan_size) {
-    temp_bl_cloud.header.frame_id = multicloud.header.frame_id 
+    temp_bl_cloud.header.frame_id = multicloud.header.frame_id
         = scan.header.frame_id = "base_link";
-    scan.angle_min = (double)config["angle_min"];
-    scan.angle_max = (double)config["angle_max"];
-    scan.range_min = (double)config["range_min"];
-    scan.range_max = (double)config["range_max"];
+    scan.angle_min = static_cast<double>(config["angle_min"]);
+    scan.angle_max = static_cast<double>(config["angle_max"]);
+    scan.range_min = static_cast<double>(config["range_min"]);
+    scan.range_max = static_cast<double>(config["range_max"]);
     scan.ranges.resize(scan_size);
     scan.angle_increment = (scan.angle_max - scan.angle_min) / (scan_size - 1);
 
@@ -58,14 +58,14 @@ bool MulticloudConverter::update(const ros::Time& stamp, const DeltaVector& delt
                 int k = deltas.size() + j - delta_offset;
                 odom_prop.step(deltas[k]);
             }
-            float ct = cos((float)odom_prop.pose[2]), st = sin((float)odom_prop.pose[2]);
+            float ct = cos(static_cast<float>(odom_prop.pose[2])), st = sin(static_cast<float>(odom_prop.pose[2]));
             Eigen::Matrix3f Juk;  // jacobian of the inverse
             Juk << -ct, st, odom_prop.pose[1] * ct + odom_prop.pose[0] * st,
                 -st, -ct, odom_prop.pose[1] * st - odom_prop.pose[0] * ct,
                 0.0, 0.0, -1.0;
             odom_prop.cov = Juk * odom_prop.cov * Juk.transpose();
             odom_prop.pose = odom_prop.pose.inverse();
-            updateJacobian(Jl, (float)odom_prop.pose[0], (float)odom_prop.pose[1], (float)odom_prop.pose[2]);
+            updateJacobian(Jl, static_cast<float>(odom_prop.pose[0]), static_cast<float>(odom_prop.pose[1]), static_cast<float>(odom_prop.pose[2]));
             for (int j = 0; j < scan_size; j++) {
                 int base = scan_size * i;
                 if (std::isfinite(temp_bl_cloud[base + j].x) && std::isfinite(temp_bl_cloud[base + j].y)) {

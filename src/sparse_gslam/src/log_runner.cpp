@@ -38,29 +38,18 @@ constexpr float NaN = std::numeric_limits<float>().quiet_NaN();
 //     }
 // }
 
-void dump_to_file(Drone& drone) {
-    // To visualize stuff, we need:
-    //  [x] XmlRpcValue slam_config (easy to get - already fetched from a saved file)
-    //  [x] NodeHandle nh (Probably not necessary... We can create a new one when reading from file)
-    //  [ ] Drone drone
-    // drone.lm_graph
-    // Save landmark graph
-    // Save pose graph
-    // Save loop_closer
-}
-
-visualization_msgs::Marker text_marker(const std::string& frame_id, const std::string& text) {
-    visualization_msgs::Marker odom_text_marker;
-    odom_text_marker.header.frame_id = frame_id;
-    odom_text_marker.text = text;
-    odom_text_marker.type = visualization_msgs::Marker::TEXT_VIEW_FACING;
-    odom_text_marker.scale.z = 1.0;
-    odom_text_marker.color.r = 0.0;
-    odom_text_marker.color.g = 0.0;
-    odom_text_marker.color.b = 0.0;
-    odom_text_marker.color.a = 1.0;
-    return odom_text_marker;
-}
+// visualization_msgs::Marker text_marker(const std::string& frame_id, const std::string& text) {
+//     visualization_msgs::Marker odom_text_marker;
+//     odom_text_marker.header.frame_id = frame_id;
+//     odom_text_marker.text = text;
+//     odom_text_marker.type = visualization_msgs::Marker::TEXT_VIEW_FACING;
+//     odom_text_marker.scale.z = 1.0;
+//     odom_text_marker.color.r = 0.0;
+//     odom_text_marker.color.g = 0.0;
+//     odom_text_marker.color.b = 0.0;
+//     odom_text_marker.color.a = 1.0;
+//     return odom_text_marker;
+// }
 
 int main(int argc, char** argv) {
     // std::this_thread::sleep_for(std::chrono::seconds(5));
@@ -76,17 +65,17 @@ int main(int argc, char** argv) {
     sensor_msgs::LaserScan full_scan;
     odometry.header.frame_id = "odom";
     full_scan.header.frame_id = odometry.child_frame_id = "base_link";
-#ifdef PUB_TEXT
-    auto odom_text = text_marker(odometry.header.frame_id, "Raw Odometry");
-    auto cor_odom_text = text_marker(odometry.header.frame_id, "Corrected Odometry");
-#endif
+// #ifdef PUB_TEXT
+//     auto odom_text = text_marker(odometry.header.frame_id, "Raw Odometry");
+//     auto cor_odom_text = text_marker(odometry.header.frame_id, "Corrected Odometry");
+// #endif
     const int sample_size = slam_config["scan_size"];
-    const float range_max = (double)slam_config["range_max"];
+    const float range_max = static_cast<double>(slam_config["range_max"]);
 
     full_scan.range_min = 0.0;
     full_scan.range_max = range_max;
-    full_scan.angle_min = (double)slam_config["angle_min"];
-    full_scan.angle_max = (double)slam_config["angle_max"];
+    full_scan.angle_min = static_cast<double>(slam_config["angle_min"]);
+    full_scan.angle_max = static_cast<double>(slam_config["angle_max"]);
     auto& full_range = full_scan.ranges;
 
     MulticloudConverter pc_converter(nh, slam_config);

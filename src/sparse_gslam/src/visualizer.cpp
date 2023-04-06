@@ -67,10 +67,10 @@ class RangeDataInserter {
 
         float error = dx / 2.0f;
         const int ystep = (y1 < y2) ? 1 : -1;
-        int y = (int)y1;
-        const int maxX = (int)x2;
+        int y = static_cast<int>(y1);
+        const int maxX = static_cast<int>(x2);
         if (steep) {
-            for (int x = (int)x1; x <= maxX; x++) {
+            for (int x = static_cast<int>(x1); x <= maxX; x++) {
                 float_grid[x * width + y] += val;
                 error -= dy;
                 if (error < 0) {
@@ -79,7 +79,7 @@ class RangeDataInserter {
                 }
             }
         } else {
-            for (int x = (int)x1; x <= maxX; x++) {
+            for (int x = static_cast<int>(x1); x <= maxX; x++) {
                 float_grid[y * width + x] += val;
                 error -= dy;
                 if (error < 0) {
@@ -192,7 +192,7 @@ struct Visualizer::Impl {
                                               l_grid(mapping::MapLimits(config["map_resolution"], Eigen::Vector2d(4., 4.), mapping::CellLimits(160, 160)), &conversion_table),
                                               p_grid(mapping::MapLimits(config["map_resolution"], Eigen::Vector2d(4., 4.), mapping::CellLimits(160, 160)), &conversion_table),
 #else
-                                              inserter((double)config["hit_probability"], (double)config["miss_probability"]),
+                                              inserter(static_cast<double>(config["hit_probability"]), static_cast<double>(config["miss_probability"])),
 #endif
                                             //   o_grid_pub(nh.advertise<nav_msgs::OccupancyGrid>("/odom_map", 5)),
                                               l_grid_pub(nh.advertise<nav_msgs::OccupancyGrid>("/landmark_map", 5)),  // !
@@ -217,7 +217,7 @@ struct Visualizer::Impl {
                     // odom_poses.header.frame_id =
                     lm_poses.header.frame_id = pg_poses.header.frame_id = "map";
 
-        o_grid_msg.info.resolution = (double)config["map_resolution"];
+        o_grid_msg.info.resolution = static_cast<double>(config["map_resolution"]);
         o_grid_msg.info.origin.orientation.w = 1.0;
 
         // for fixed size map
