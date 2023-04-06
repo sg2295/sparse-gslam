@@ -170,7 +170,7 @@ int main(int argc, char** argv) {
                 start_t = std::chrono::steady_clock::now();
                 drone.loop_closer.precompute();
                 drone.loop_closer.match();
-                backend_time << (std::chrono::steady_clock::now() - start_t).count() * 1e-9 << '\n';
+                // backend_time << (std::chrono::steady_clock::now() - start_t).count() * 1e-9 << '\n';
             }
         }
 
@@ -260,10 +260,10 @@ int main(int argc, char** argv) {
         ros::Rate rate(_rate);
         int k = 0;
         provider->get_data(time, cur_pose, full_range) && ros::ok();
-        dataset_time << time << '\n';
+        // dataset_time << time << '\n';
         callback(k++);
         for (; provider->get_data(time, cur_pose, full_range) && ros::ok(); k++) {
-            dataset_time << time << '\n';
+            // dataset_time << time << '\n';
             callback(k);
             rate.sleep();
         }
