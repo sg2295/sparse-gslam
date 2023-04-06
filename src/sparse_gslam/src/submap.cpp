@@ -9,7 +9,7 @@ mapping::ValueConversionTables Submap::conversion_tables;
 
 Submap::Submap(float res): probability_grid(mapping::MapLimits(res, Eigen::Vector2d(4., 4.), mapping::CellLimits(160, 160)), &conversion_tables),
                            high_res_grid(mapping::MapLimits(0.05f, Eigen::Vector2d(4., 4.), mapping::CellLimits(160, 160)), &conversion_tables) {
-#if defined(VISUALIZE_SUBMAP) || defined(SHOW_MATCH)
+#if defined(VISUALIZE_SUBMAP) // || defined(SHOW_MATCH)
     grid.header.frame_id = "map";
     grid.info.resolution = res;
 #endif
@@ -18,7 +18,7 @@ Submap::Submap(float res): probability_grid(mapping::MapLimits(res, Eigen::Vecto
 void Submap::fix_submap(g2o::VertexSE2* pose, const mapping::scan_matching::proto::FastCorrelativeScanMatcherOptions2D& options, float padding) {
     this->pose = pose;
     matcher.emplace(static_cast<const mapping::Grid2D&>(probability_grid), options);
-#if defined(VISUALIZE_SUBMAP) || defined(SHOW_MATCH)
+#if defined(VISUALIZE_SUBMAP) // || defined(SHOW_MATCH)
     box = probability_grid_to_occupancy_grid(pose->estimate(), probability_grid, grid, padding);
 #endif
 }
@@ -79,7 +79,7 @@ void Submap::probability_grid_to_occupancy_grid_fixed_size(const mapping::Probab
     }
 }
 
-#if defined(VISUALIZE_SUBMAP) || defined(SHOW_MATCH)
+#if defined(VISUALIZE_SUBMAP) // || defined(SHOW_MATCH)
 void Submap::publish_without_compute(ros::Publisher& pub, const g2o::SE2& pose) {
     if (!pub.getNumSubscribers())
         return;

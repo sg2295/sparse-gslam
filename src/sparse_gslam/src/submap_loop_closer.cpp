@@ -10,10 +10,10 @@
 #include "pose_with_observation.h"
 #include "g2o_bindings/edge_se2_rhotheta.h"
 
-#ifdef SHOW_MATCH
-#include "ls_extractor/matplotlibcpp.h"
-namespace plt = matplotlibcpp;
-#endif
+// #ifdef SHOW_MATCH
+// #include "ls_extractor/matplotlibcpp.h"
+// namespace plt = matplotlibcpp;
+// #endif
 
 // ceres_scan_matcher = {
 //   occupied_space_weight = 20.,
@@ -55,9 +55,9 @@ SubmapLoopCloser::SubmapLoopCloser(Drone& drone, const XmlRpc::XmlRpcValue& conf
     matcher_options.set_linear_search_window(config["linear_search_window"]);
     matcher_options.set_branch_and_bound_depth(config["branch_and_bound_depth"]);
     dcs_kernel.setDelta(config["dcs_phi"]);
-#ifdef SHOW_MATCH
-    plt::ion();
-#endif
+// #ifdef SHOW_MATCH
+//     plt::ion();
+// #endif
 }
 
 void SubmapLoopCloser::precompute() {
@@ -182,25 +182,25 @@ bool SubmapLoopCloser::match() {
                                 b_result.it->high_res_grid, &b_result.pose_estimate,
                                 &unused_summary);
         }
-#ifdef SHOW_MATCH
-        auto& grid = b_result.it->grid;
-        std::cout << "match transform: " << transform::ToProto(b_result.pose_estimate).DebugString();
-        std::vector<float> x, y;
-        x.reserve(multi_scan.size());
-        y.reserve(multi_scan.size());
-        auto _pef = b_result.pose_estimate.cast<float>();
-        for (auto& p : multi_scan) {
-            Eigen::Vector2f pi = (_pef * p - b_result.it->box.min()) / b_result.it->grid.info.resolution;
-            x.push_back(pi[0]);
-            y.push_back(pi[1]);
-        }
-        plt::clf();
-        plt::imshow((unsigned char*)grid.data.data(), grid.info.height, grid.info.width, 1, {{"cmap", "gray"}});
-        plt::scatter(x, y, 2.0);
+// #ifdef SHOW_MATCH
+//         auto& grid = b_result.it->grid;
+//         std::cout << "match transform: " << transform::ToProto(b_result.pose_estimate).DebugString();
+//         std::vector<float> x, y;
+//         x.reserve(multi_scan.size());
+//         y.reserve(multi_scan.size());
+//         auto _pef = b_result.pose_estimate.cast<float>();
+//         for (auto& p : multi_scan) {
+//             Eigen::Vector2f pi = (_pef * p - b_result.it->box.min()) / b_result.it->grid.info.resolution;
+//             x.push_back(pi[0]);
+//             y.push_back(pi[1]);
+//         }
+//         plt::clf();
+//         plt::imshow((unsigned char*)grid.data.data(), grid.info.height, grid.info.width, 1, {{"cmap", "gray"}});
+//         plt::scatter(x, y, 2.0);
 
-        std::stringstream title_ss;
-        title_ss << "accepted\n";
-#endif
+//         std::stringstream title_ss;
+//         title_ss << "accepted\n";
+// #endif
         {
             lm_lock.lock();
             boost::unique_lock<boost::shared_mutex> pose_lock(drone.pose_graph.mu);
@@ -274,9 +274,9 @@ bool SubmapLoopCloser::match() {
             auto* odom_edge = &drone.pose_graph.all_closures.back();
             odom_edge->setMeasurement(g2o::SE2(b_result.pose_estimate.translation()[0], b_result.pose_estimate.translation()[1], b_result.pose_estimate.rotation().angle()));
             odom_edge->information().noalias() = b_result.covariance.inverse();
-#ifdef SHOW_MATCH
-            title_ss << odom_edge->information();
-#endif
+// #ifdef SHOW_MATCH
+//             title_ss << odom_edge->information();
+// #endif
             odom_edge->vertices()[0] = drone.pose_graph.opt.vertices()[b_result.it->pose->id()];
             odom_edge->vertices()[1] = &drone.pose_graph.poses[mid].pose;
 
