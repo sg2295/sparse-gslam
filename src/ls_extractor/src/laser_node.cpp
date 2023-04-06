@@ -37,7 +37,7 @@ int main(int argc, char** argv) {
     ros::param::get("~config", config);
     ros::param::get("~frame_id", frame_id);
     SegmentVisualizer vis(frame_id, nh);
-    auto sub = nh.subscribe<sensor_msgs::LaserScan>("scan1", 1, boost::bind(callback, vis, _1));
+    auto sub = nh.subscribe<sensor_msgs::LaserScan>("scan", 1, boost::bind(callback, vis, _1));
     ros::spin();
     return 0;
 }

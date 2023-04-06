@@ -11,7 +11,7 @@ MulticloudConverter::MulticloudConverter(ros::NodeHandle& nh,
                                          const XmlRpc::XmlRpcValue& config) : scan_size(config["scan_size"]),
                                                                               mc_window_size(config["multicloud_size"]),
                                                                               var_r(std::pow(config["std_r"], 2.0)),
-                                                                              scan_pub(nh.advertise<sensor_msgs::LaserScan>("scan", 2)),
+                                                                            //   scan_pub(nh.advertise<sensor_msgs::LaserScan>("scan", 2)),
                                                                             //   mc_pub(nh.advertise<sensor_msgs::PointCloud2>("multicloud", 2)),
                                                                               odom_prop(static_cast<double>(config["std_x"]), static_cast<double>(config["std_y"]), static_cast<double>(config["std_w"])),
                                                                               table(scan_size) {
@@ -34,7 +34,7 @@ MulticloudConverter::MulticloudConverter(ros::NodeHandle& nh,
 
 bool MulticloudConverter::update(const ros::Time& stamp, const DeltaVector& deltas, const tf::Transform& current_scan_tf) {
     scan.header.stamp = stamp;
-    scan_pub.publish(scan);
+    // scan_pub.publish(scan);
 
     for (int i = 0; i < scan_size; i++) {
         temp_cloud[i].x = table[i].cos_v * thresh(scan.ranges[i], scan.range_max);
