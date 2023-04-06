@@ -85,7 +85,7 @@ int main(int argc, char** argv) {
         ros::param::get("~line_extractor", ls_config);
         ls_extractor::parseParams(extractor.params, ls_config);
     }
-    ls_extractor::SegmentVisualizer ls_vis("base_link", nh);
+    // ls_extractor::SegmentVisualizer ls_vis("base_link", nh);
 
     // auto odom_pub = nh.advertise<nav_msgs::Odometry>("odom", 1);
     // auto full_scan_pub = nh.advertise<sensor_msgs::LaserScan>("full_scan", 1);
