@@ -87,7 +87,7 @@ int main(int argc, char** argv) {
     }
     ls_extractor::SegmentVisualizer ls_vis("base_link", nh);
 
-    auto odom_pub = nh.advertise<nav_msgs::Odometry>("odom", 1);
+    // auto odom_pub = nh.advertise<nav_msgs::Odometry>("odom", 1);
     auto full_scan_pub = nh.advertise<sensor_msgs::LaserScan>("full_scan", 1);
     auto odom_text_pub = nh.advertise<visualization_msgs::Marker>("odom_text", 1);
     // auto cor_odom_text_pub = nh.advertise<visualization_msgs::Marker>("cor_odom_text", 1);
@@ -162,7 +162,7 @@ int main(int argc, char** argv) {
             }
         }
 
-        odom_pub.publish(odometry);
+        // odom_pub.publish(odometry);
         full_scan_pub.publish(full_scan);
 // #ifdef PUB_TEXT
 //         odom_text.pose = odometry.pose.pose;
