@@ -7,6 +7,8 @@ project(Project)
 
 set(CATKIN_TOPLEVEL TRUE)
 
+add_compile_options(-Os -s -DNDEBUG)
+
 # search for catkin within the workspace
 set(_cmd "catkin_find_pkg" "catkin" "${CMAKE_SOURCE_DIR}")
 execute_process(COMMAND ${_cmd}
