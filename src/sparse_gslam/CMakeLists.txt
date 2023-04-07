@@ -26,6 +26,9 @@ find_package(catkin REQUIRED COMPONENTS
   visualization_msgs
 )
 
+set(catkin_LIBRARIES ${catkin_LIBRARIES} -pg)
+
+
 find_package(OpenCV REQUIRED)
 find_package(ls_extractor REQUIRED)
 find_package(Python3 COMPONENTS Development)
@@ -227,12 +230,12 @@ include_directories(
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
 
-add_library(g2o_bindings 
-  src/g2o_bindings/vertex_rhotheta.cpp 
+add_library(g2o_bindings
+  src/g2o_bindings/vertex_rhotheta.cpp
   src/g2o_bindings/edge_se2_rhotheta.cpp
 )
 
-SET(G2O_LIBRARIES 
+SET(G2O_LIBRARIES
   ${G2O_STUFF_LIBRARY}
   ${G2O_CORE_LIBRARY}
   ${G2O_TYPES_SLAM2D}
@@ -242,15 +245,15 @@ SET(G2O_LIBRARIES
   g2o_bindings
 )
 
-add_library(cartographer_bindings 
-  src/cartographer_bindings/range_data_inserter_2d.cc 
-  src/cartographer_bindings/range_data_2d.cc 
-  src/cartographer_bindings/fast_correlative_scan_matcher_2d.cc 
-  src/cartographer_bindings/correlative_scan_matcher_2d.cc 
+add_library(cartographer_bindings
+  src/cartographer_bindings/range_data_inserter_2d.cc
+  src/cartographer_bindings/range_data_2d.cc
+  src/cartographer_bindings/fast_correlative_scan_matcher_2d.cc
+  src/cartographer_bindings/correlative_scan_matcher_2d.cc
 )
 target_link_libraries(cartographer_bindings cartographer)
 
-add_library(sparse_slam 
+add_library(sparse_slam
   src/graphs.cpp
   src/visualizer.cpp
   src/drone.cpp
@@ -260,8 +263,8 @@ add_library(sparse_slam
   src/multicloud2.cpp
 )
 
-add_executable(log_runner 
-  src/log_runner.cpp 
+add_executable(log_runner
+  src/log_runner.cpp
   src/data_provider.cpp
 )
 
