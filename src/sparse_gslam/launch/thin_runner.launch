@@ -21,6 +21,7 @@
       /graph_edges
     "/>
 
+    <env name="GMON_OUT_PREFIX" value="log_runner" />
     <node pkg="sparse_gslam" type="log_runner" name="log_runner" output="screen">
         <rosparam param="realtime" subst_value="true">$(arg realtime)</rosparam>
         <rosparam param="rate" subst_value="true">$(arg rate)</rosparam>
