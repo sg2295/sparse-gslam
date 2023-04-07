@@ -321,7 +321,7 @@ struct Visualizer::Impl {
             //     match_submap_marker.points.emplace_back();
             //     match_submap_marker.points.back().x = info.x;
             //     match_submap_marker.points.back().y = info.y;
-//             // }
+            // }
 // #if defined(VISUALIZE_SUBMAP) // || defined(SHOW_MATCH)
 //             int last_submaps_to_pub = std::min((int)submaps_pub.size(), (int)drone.loop_closer.submaps.size() - 1);
 //             if (last_submaps_to_pub > 0 && drone.lm_graph.poses.size() > 2) {
