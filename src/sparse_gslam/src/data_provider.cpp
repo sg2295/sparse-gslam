@@ -347,11 +347,11 @@ class EV3DataProvider : public DataProvider {
         for (size_t i = 0; i < bearing.size(); ++i) {
             size_t start = std::max(i - kernel.size() / 2, 0UL);
             size_t end = std::min(i + 1 + kernel.size() / 2, bearing.size());
-            auto window = std::array<float, end - start>{};
+            auto window = std::vector<float>(end - start);
             for (size_t j = 0; j < window.size(); ++j)
                 window.at(j) = (j + start < end) ? bearing.at(j + start) : 0;
 
-            auto kernel_window = std::array<float, end - start>{};
+            auto kernel_window = std::vector<float>(end - start);
             size_t k_start = std::max(kernel.size() / 2 - (i - start), 0UL);
             size_t k_end = std::min(kernel.size() / 2 + (end - i), kernel.size());
             for (size_t j = k_start; j < k_end; ++j)
