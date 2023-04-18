@@ -276,14 +276,14 @@ class EV3DataProvider : public DataProvider {
                 iss >> bearing.at(j);
             // ! Choose what filtering method we will use !
             // 1) N-th value filter (get 1st entry, susceptible to noise)
+            full_range.at(i) = nth_filter<0>(bearing) / scaling;
             // 2) N-th value filter (get 25th entry, susceptible to noise)
-            // full_range.at(i) = nth_filter<4>(bearing) / scaling;
+            // full_range.at(i) = nth_filter<24>(bearing) / scaling;
             // 3) Average filter (incorporates outliers and skews results)
             // full_range.at(i) = average_filter(bearing) / scaling;
             // 4) Median filter (effectively removes outliers & impulse noise)
-            (void)gaussian_filter(bearing);
-            full_range.at(i) = median_filter(bearing) / scaling;
-            // 5) Kalman filter or Low-pass filter. Requires us to transform into frequency space.
+            // full_range.at(i) = median_filter(bearing) / scaling;
+            // 5) Gaussian Filter  // TODO: How should we use the Gaussian Filter? Median/Average?
             // std::cout << full_range.at(i) << " ";
         }
         // std::cout << std::endl;
@@ -334,7 +334,7 @@ class EV3DataProvider : public DataProvider {
     float gaussian_filter(std::array<float, num_readings_per_bearing>& bearing) const {
         unsigned constexpr std = 2;  // TODO: What size do we want?...
         unsigned constexpr kernel_size = 6 * std + 1;  // This is a function of std
-        std::cout << "Kernel size=" << kernel_size << std::endl;
+        // TODO: Fix Gaussian Filter.
         auto kernel = std::array<float, kernel_size>{};
         float k_sum = 0;
         for (size_t i = 0; i < kernel.size(); ++i) {
