@@ -27,18 +27,18 @@ inline void se2_to_pose(const g2o::SE2 &se2, geometry_msgs::Pose &pose, double z
     pose.orientation.w = cos(half);
 }
 
-template <typename T>
-void visualize_closures(const T &closures, visualization_msgs::Marker &marker) {
-    marker.points.resize(closures.size() * 2);
-    int i = 0;
-    for (auto *edge : closures) {
-        auto *src = static_cast<g2o::VertexSE2 *>(edge->vertices()[0]);
-        auto *dst = static_cast<g2o::VertexSE2 *>(edge->vertices()[1]);
-        eigen_to_point(src->estimate().translation(), marker.points[2 * i], 0.0);
-        eigen_to_point(dst->estimate().translation(), marker.points[2 * i + 1], 0.0);
-        i++;
-    }
-}
+// template <typename T>
+// void visualize_closures(const T &closures, visualization_msgs::Marker &marker) {
+//     marker.points.resize(closures.size() * 2);
+//     int i = 0;
+//     for (auto *edge : closures) {
+//         auto *src = static_cast<g2o::VertexSE2 *>(edge->vertices()[0]);
+//         auto *dst = static_cast<g2o::VertexSE2 *>(edge->vertices()[1]);
+//         eigen_to_point(src->estimate().translation(), marker.points[2 * i], 0.0);
+//         eigen_to_point(dst->estimate().translation(), marker.points[2 * i + 1], 0.0);
+//         i++;
+//     }
+// }
 
 // insert range data directly into occupancy grid
 class RangeDataInserter {

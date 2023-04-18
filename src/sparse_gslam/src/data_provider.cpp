@@ -281,6 +281,7 @@ class EV3DataProvider : public DataProvider {
             // 3) Average filter (incorporates outliers and skews results)
             // full_range.at(i) = average_filter(bearing) / scaling;
             // 4) Median filter (effectively removes outliers & impulse noise)
+            (void)gaussian_filter(bearing);
             full_range.at(i) = median_filter(bearing) / scaling;
             // 5) Kalman filter or Low-pass filter. Requires us to transform into frequency space.
             // std::cout << full_range.at(i) << " ";
@@ -340,9 +341,15 @@ class EV3DataProvider : public DataProvider {
             kernel.at(i) = std::exp(-(i - kernel_size / 2) * (i - kernel_size / 2) / (2 * std * std));
             k_sum += kernel.at(i);
         }
-        for (size_t i = 0; i < kernel.size(); ++i)
-            kernel.at(i) /= k_sum;
 
+        std::cout << "Kernel: ";
+        for (size_t i = 0; i < kernel.size(); ++i) {
+            kernel.at(i) /= k_sum;
+            std::cout << kernel.at(i) << ", ";
+        }
+        std::cout << std::endl;
+
+        std::cout << "Filtered: ";
         auto filtered = std::array<float, num_readings_per_bearing>{};
         for (size_t i = 0; i < bearing.size(); ++i) {
             size_t start = std::max(i - kernel.size() / 2, 0UL);
@@ -359,7 +366,9 @@ class EV3DataProvider : public DataProvider {
 
             for (size_t j = 0; j < k_end - k_start; ++j)
                 filtered.at(i) += window.at(j + k_start) * kernel_window.at(j);
+            std::cout << filtered.at(i) << ", ";
         }
+        std::cout << std::endl;
 
         // TODO: Choose what value we will use...
         return bearing.at(0);  // TODO: Fill in
