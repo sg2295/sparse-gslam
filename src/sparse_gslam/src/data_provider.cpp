@@ -272,8 +272,13 @@ class EV3DataProvider : public DataProvider {
         full_range.resize(num_readings);
         for (size_t i = 0; i < num_readings; ++i) {
             auto bearing = std::array<float, num_readings_per_bearing>{};
-            for (size_t j = 0; j < num_readings_per_bearing; ++j)
-                iss >> bearing.at(j);
+            for (size_t j = 0; j < num_readings_per_bearing; ++j) {
+                float tmp = 0;
+                iss >> tmp;
+                if (tmp > 80) tmp = 80;
+                bearing.at(j) = tmp; // Calibrate the sensor readings
+            }
+
             // ! Choose what filtering method we will use !
             // 1) N-th value filter (get 1st entry, susceptible to noise)
             full_range.at(i) = nth_filter<0>(bearing) / scaling;
@@ -305,9 +310,6 @@ class EV3DataProvider : public DataProvider {
             total_val += val;
         return total_val / bearing.size();
     }
-
-    // Perhaps combine moving average with median?
-    // float sorting_average_filter()  // Sort first, disregard bottom/top 25% then take middle average
 
     // float piecewise_linear_regression()  // piecewise linear regression method paired with an average/median filter
     // Proposed by: https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7010761
