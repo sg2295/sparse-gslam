@@ -1,17 +1,17 @@
 address: radio://0/80/2M/E7E7E7E702
 # STD of odometry (meters).  The larger error the smaller the weight (pose-pose constaint)
-std_x: 0.2
-std_y: 0.2
+std_x: 0.1
+std_y: 0.1
 std_w: 0.1
 # STD of measurements (meters). The larger error the smaller the weight (pose-landmark constraint)
-std_r: 0.1  # The ev3 spec claims a 0.01 resolution https://www.mikrocontroller.net/attachment/338591/hardware_developer_kit.pdf
+std_r: 0.2  # The ev3 spec claims a 0.01 resolution https://www.mikrocontroller.net/attachment/338591/hardware_developer_kit.pdf
 std_rpcm: 0.0001  # ignored.
 
 # Configuration for distance sensor
 angle_min: -1.5707963267948966
 angle_max: 1.5707963267948966
-range_min: 0.3
-range_max: 8.0  # Due to inaccurate measurements keep this low. # ! Try with 0.5 again...
+range_min: 0.1
+range_max: 3.0  # Due to inaccurate measurements keep this low. # ! Try with 0.5 again...
 scan_size: 13  # Number of measurements per scan
 multicloud_size: 143  # 180 before  # TODO: Try with 104 too... (Multiples of scan_size)  # 117 : 9 poses. 104: 8 poses
 
@@ -32,7 +32,7 @@ landmark_assoc_thresh: 0.5  # Epsilon in formula [5] - default is .5 (works well
 # Make it equal to 2 multiscans; hence 9 poses (max dist covered in one transition=17cm)
 last_traj_length: 10.0
 # Loop closure threshold - The larger the value the better the precision + computation
-loop_closure_min_score: 0.6  # We used to have .6 before
+loop_closure_min_score: 0.65  # We used to have .6 before
 # See cartographer paper for the below...
 # Enlarge window and increase depth for better recall - but higher computation
 angular_search_window: 1.5 # radians  # Default is 1.0  # we had 1.57 before
