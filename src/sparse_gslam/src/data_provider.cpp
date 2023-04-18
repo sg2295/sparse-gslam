@@ -4,6 +4,7 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include <cmath>
 
 struct Data {
     double time;
@@ -305,6 +306,10 @@ class EV3DataProvider : public DataProvider {
     }
 
     // Perhaps combine moving average with median?
+    // float sorting_average_filter()  // Sort first, disregard bottom/top 25% then take middle average
+
+    // float piecewise_linear_regression()  // piecewise linear regression method paired with an average/median filter
+    // Proposed by: https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7010761
 
     float median_filter(std::array<float, num_readings_per_bearing>& bearing) const {
         // Use insertion sort since array is small
@@ -327,7 +332,36 @@ class EV3DataProvider : public DataProvider {
 
     float gaussian_filter(std::array<float, num_readings_per_bearing>& bearing) const {
         unsigned constexpr std = 2;  // TODO: What size do we want?...
-        unsigned constexpr kernel_size = 13;  // This is a function of std
+        unsigned constexpr kernel_size = 6 * std + 1;  // This is a function of std
+        std::cout << "Kernel size=" << kernel_size << std::endl;
+        auto kernel = std::array<float, kernel_size>{};
+        float k_sum = 0;
+        for (size_t i = 0; i < kernel.size(); ++i) {
+            kernel.at(i) = std::exp(-(i - kernel_size / 2) * (i - kernel_size / 2) / (2 * std * std));
+            k_sum += kernel.at(i);
+        }
+        for (size_t i = 0; i < kernel.size(); ++i)
+            kernel.at(i) /= k_sum;
+
+        auto filtered = std::array<float, num_readings_per_bearing>{};
+        for (size_t i = 0; i < bearing.size(); ++i) {
+            size_t start = std::max(i - kernel.size() / 2, 0);
+            size_t end = std::min(i + 1 + kernel.size() / 2, bearing.size());
+            auto window = std::array<float, end - start>{};
+            for (size_t j = 0; j < window.size(); ++j)
+                window.at(j) = (j + start < end) ? bearing.at(j + start) : 0;
+
+            auto kernel_window = std::array<float, end - start>{};
+            size_t k_start = std::max(kernel.size() / 2 - (i - start), 0);
+            size_t k_end = std::min(kernel.size() / 2 + (end - i), kernel.size());
+            for (size_t j = k_start; j < k_end; ++j)
+                kernel_window.at(j - k_start) = kernel.at(j);
+
+            for (size_t j = 0; j < k_end - k_start; ++j)
+                filtered.at(i) += window.at(j + k_start) * kernel_window.at(j);
+        }
+
+        // TODO: Choose what value we will use...
         return bearing.at(0);  // TODO: Fill in
     }
 };
