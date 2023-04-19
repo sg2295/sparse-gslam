@@ -275,8 +275,7 @@ class EV3DataProvider : public DataProvider {
             for (size_t j = 0; j < num_readings_per_bearing; ++j) {
                 float tmp = 0;
                 iss >> tmp;
-                if (tmp > 80) tmp = 80;
-                bearing.at(j) = tmp; // Calibrate the sensor readings
+                bearing.at(j) = calibrate(tmp); // Calibrate the sensor readings
             }
 
             // ! Choose what filtering method we will use !
@@ -298,6 +297,20 @@ class EV3DataProvider : public DataProvider {
         return true;
     }
    private:
+    float calibrate(float value) const {
+        // Inspired by: https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7010761
+        if (value > 80)  value = 80;  // ! Cap readings at 80cm !
+        if (value < 6)  // [3, 6)
+            return 1.461 * value + -1.428;
+        if (value < 12)  // [6, 12)
+            return 0.819 * value + 2.710;
+        if (value < 24)  // [12, 24)
+            return 1.0 * value + 0.337;
+        if (value < 40)  // [24, 40)
+            return 0.856 * value + 4.415;
+        return 1.00 * value + -0.476;  // [40, 80]
+    }
+
     template<unsigned n>
     float nth_filter(std::array<float, num_readings_per_bearing> const& bearing) const {
         static_assert(n < bearing.size(), "Given index is out of bounds.");
@@ -312,7 +325,7 @@ class EV3DataProvider : public DataProvider {
     }
 
     // float piecewise_linear_regression()  // piecewise linear regression method paired with an average/median filter
-    // Proposed by: https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7010761
+
 
     float median_filter(std::array<float, num_readings_per_bearing>& bearing) const {
         // Use insertion sort since array is small
