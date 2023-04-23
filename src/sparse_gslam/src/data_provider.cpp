@@ -287,7 +287,6 @@ class EV3DataProvider : public DataProvider {
             // full_range.at(i) = average_filter(bearing) / scaling;
             // 4) Median filter (effectively removes outliers & impulse noise)
             // full_range.at(i) = median_filter(bearing) / scaling;
-            // 5) Gaussian Filter  // TODO: How should we use the Gaussian Filter? Median/Average?
             // std::cout << full_range.at(i) << " ";
         }
         // std::cout << std::endl;
@@ -324,9 +323,6 @@ class EV3DataProvider : public DataProvider {
         return total_val / bearing.size();
     }
 
-    // float piecewise_linear_regression()  // piecewise linear regression method paired with an average/median filter
-
-
     float median_filter(std::array<float, num_readings_per_bearing>& bearing) const {
         // Use insertion sort since array is small
         for (size_t i = 1; i < bearing.size(); ++i) {
@@ -334,16 +330,16 @@ class EV3DataProvider : public DataProvider {
             size_t j = i - 1;
             while (j != static_cast<size_t>(-1) && bearing.at(j) > temp) {
                 bearing.at(j + 1) = bearing.at(j);
-                j--;
+                --j;
             }
             bearing.at(j + 1) = temp;
         }
         // Get median
+        size_t mid_idx = static_cast<size_t>((bearing.size() - 1) / 2);
         if (bearing.size() % 2 == 0) {
-            size_t mid_idx = static_cast<size_t>((bearing.size() - 1) / 2);
             return (bearing.at(mid_idx) + bearing.at(mid_idx + 1)) / 2;
         }
-        return bearing.at(static_cast<size_t>((bearing.size() - 1) / 2));
+        return bearing.at(mid_idx);
     }
 
     float gaussian_filter(std::array<float, num_readings_per_bearing>& bearing) const {
