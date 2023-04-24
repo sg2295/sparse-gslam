@@ -254,7 +254,7 @@ class EV3DataProvider : public DataProvider {
     std::string line, prefix, junk;
     double prev_time = 0;
     static unsigned constexpr num_readings = 13;
-    static unsigned constexpr num_readings_per_bearing = 1;  // TODO: Change to 25 for original dataset
+    static unsigned constexpr num_readings_per_bearing = 25;
     static unsigned constexpr scaling = 10;  // decimeter
 
    public:
