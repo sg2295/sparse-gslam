@@ -276,7 +276,7 @@ class EV3DataProvider : public DataProvider {
                 float tmp = 0;
                 iss >> tmp;
                 if (tmp > 80) tmp = 80;
-                bearing.at(i) = tmp;
+                bearing.at(j) = tmp;
                 // bearing.at(j) = calibrate(tmp); // Calibrate the sensor readings
             }
 
