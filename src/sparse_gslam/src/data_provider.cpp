@@ -275,7 +275,8 @@ class EV3DataProvider : public DataProvider {
             for (size_t j = 0; j < num_readings_per_bearing; ++j) {
                 float tmp = 0;
                 iss >> tmp;
-                bearing.at(j) = calibrate(tmp); // Calibrate the sensor readings
+                bearing.at(i) = tmp;
+                // bearing.at(j) = calibrate(tmp); // Calibrate the sensor readings
             }
 
             // ! Choose what filtering method we will use !
@@ -298,7 +299,7 @@ class EV3DataProvider : public DataProvider {
    private:
     float calibrate(float value) const {
         // Inspired by: https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7010761
-        if (value > 80)  value = 80;  // ! Cap readings at 80cm !
+        // if (value > 80)  value = 80;  // ! Cap readings at 80cm !
         if (value < 6)  // [3, 6)
             return 1.461 * value + -1.428;
         if (value < 12)  // [6, 12)
