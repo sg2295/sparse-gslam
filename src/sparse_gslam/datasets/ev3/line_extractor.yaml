@@ -1,17 +1,17 @@
-# Max distance between any pair of points on a line segment # Default is 0.3
+# Max distance between any pair of points on a line segment
 max_line_gap: 1.0
 
-# Min line length allowed  # Default is 0.75
+# Min line length allowed
 # This should be set to >= smallest feature present in the environment
 min_line_length: 1.0
 
-# If the distance of a point on the line to the line segment is greater than N then split the segment  # Default is 0.1
+# If the distance of a point on the line to the line segment is greater than N then split the segment
 min_split_dist: 0.2
 
-# If the distance from a point to any of its two neighbours is greater than N then it's an outlier  # Default is 0.1
+# If the distance from a point to any of its two neighbours is greater than N then it's an outlier
 outlier_dist: 0.2
 
-# Minumum number of points for a segment  # Default is 10
+# Minumum number of points for a segment
 min_line_points: 10
 
 # Unused...
