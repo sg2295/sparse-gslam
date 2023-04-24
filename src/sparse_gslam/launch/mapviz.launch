@@ -1,5 +1,5 @@
 <launch>
-    <node type="rviz" name="landmark" pkg="rviz" args="-d $(find sparse_gslam)/rviz_config/landmark_thin.rviz" />
-    <node type="rviz" name="pose" pkg="rviz" args="-d $(find sparse_gslam)/rviz_config/pose_graph.rviz" />
-    <node pkg="rosbag" type="play" name="replay" output="screen" args="$(find sparse_gslam)/bagfiles/out.bag" />
+  <node type="rviz" name="landmark" pkg="rviz" args="-d $(find sparse_gslam)/rviz_config/landmark_thin.rviz" />
+  <node type="rviz" name="pose" pkg="rviz" args="-d $(find sparse_gslam)/rviz_config/pose_graph.rviz" />
+  <node pkg="rosbag" type="play" name="replay" output="screen" args="$(find sparse_gslam)/bagfiles/out.bag" />
 </launch>
