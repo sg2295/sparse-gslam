@@ -254,7 +254,7 @@ class EV3DataProvider : public DataProvider {
     std::string line, prefix, junk;
     double prev_time = 0;
     static unsigned constexpr num_readings = 13;
-    static unsigned constexpr num_readings_per_bearing = 25;
+    static unsigned constexpr num_readings_per_bearing = 10;
     static unsigned constexpr scaling = 10;  // 100;
 
    public:
@@ -267,8 +267,6 @@ class EV3DataProvider : public DataProvider {
         for (size_t i = 0; i < pose_data.size(); ++i)
             iss >> pose_data.at(i);
         pose = g2o::SE2(pose_data.at(0) / scaling, pose_data.at(1) / scaling, pose_data.at(2));
-        // std::cout << pose_data.at(0) / scaling << ", " << pose_data.at(1) / scaling << ", " << pose_data.at(2) << ": ";
-
         full_range.resize(num_readings);
         for (size_t i = 0; i < num_readings; ++i) {
             auto bearing = std::array<float, num_readings_per_bearing>{};
@@ -289,12 +287,10 @@ class EV3DataProvider : public DataProvider {
             // full_range.at(i) = average_filter(bearing) / scaling;
             // 4) Median filter (effectively removes outliers & impulse noise)
             // full_range.at(i) = median_filter(bearing) / scaling;
-            // std::cout << full_range.at(i) << " ";
         }
-        // std::cout << std::endl;
         time = prev_time;
         prev_time += 1.0;
-        std::cout << "Read: " << prev_time << " lines" << std::endl;
+        std::cout << "Read: " << prev_time << " lines" << std::endl;  // TODO: Remove before submission...
         return true;
     }
    private:
@@ -345,9 +341,9 @@ class EV3DataProvider : public DataProvider {
     }
 
     float gaussian_filter(std::array<float, num_readings_per_bearing>& bearing) const {
-        unsigned constexpr std = 2;  // TODO: What size do we want?...
+        unsigned constexpr std = 2;
         unsigned constexpr kernel_size = 6 * std + 1;  // This is a function of std
-        // TODO: Fix Gaussian Filter.
+        // N.B. Gaussian Filter was not used. Noise is non-gaussian & data is already precise but inaccurate...
         auto kernel = std::array<float, kernel_size>{};
         float k_sum = 0;
         for (size_t i = 0; i < kernel.size(); ++i) {
@@ -382,9 +378,7 @@ class EV3DataProvider : public DataProvider {
             std::cout << filtered.at(i) << ", ";
         }
         std::cout << std::endl;
-
-        // TODO: Choose what value we will use...
-        return bearing.at(0);  // TODO: Fill in
+        return bearing.at(0);  // Pick a representative value...
     }
 };
 
