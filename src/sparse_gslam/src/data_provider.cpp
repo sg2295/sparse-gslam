@@ -288,7 +288,6 @@ class EV3DataProvider : public DataProvider {
         }
         time = prev_time;
         prev_time += 1.0;
-        std::cout << "Read: " << prev_time << " lines" << std::endl;  // TODO: Remove before submission...
         return true;
     }
    private:
@@ -338,10 +337,10 @@ class EV3DataProvider : public DataProvider {
         return bearing.at(mid_idx);
     }
 
+    // N.B. Gaussian Filter was not used. Noise is non-gaussian & data is already precise but inaccurate...
     float gaussian_filter(std::array<float, num_readings_per_bearing>& bearing) const {
         unsigned constexpr std = 2;
         unsigned constexpr kernel_size = 6 * std + 1;  // This is a function of std
-        // N.B. Gaussian Filter was not used. Noise is non-gaussian & data is already precise but inaccurate...
         auto kernel = std::array<float, kernel_size>{};
         float k_sum = 0;
         for (size_t i = 0; i < kernel.size(); ++i) {
