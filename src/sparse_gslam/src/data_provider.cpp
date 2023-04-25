@@ -284,9 +284,9 @@ class EV3DataProvider : public DataProvider {
             // 2) N-th value filter (get 25th entry, susceptible to noise)
             // full_range.at(i) = nth_filter<24>(bearing) / scaling;
             // 3) Average filter (incorporates outliers and skews results)
-            full_range.at(i) = average_filter(bearing) / scaling;
+            // full_range.at(i) = average_filter(bearing) / scaling;
             // 4) Median filter (effectively removes outliers & impulse noise)
-            // full_range.at(i) = median_filter(bearing) / scaling;
+            full_range.at(i) = median_filter(bearing) / scaling;
         }
         time = prev_time;
         prev_time += 1.0;
