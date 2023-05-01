@@ -1,58 +1,41 @@
 # Efficient 2D Graph SLAM for Sparse Sensing
 
-This repository contains code for `Efficient 2D Graph SLAM for Sparse Sensing`. The paper can be accessed [here](paper/iros2022.pdf). 
+This repository contains code for `Efficient 2D Graph SLAM for Sparse Sensing`. The paper can be accessed [here](paper/iros2022.pdf).
+
+THIS SPARSE GSLAM REPOSITORY HAS BEEN EXTENDED AND MODIFIED BY SERGIOS GAVRIILIDIS AS FOLLOWS:
+- A new data provider `EV3DataProvider` that provides calibration and digital signal processing methods for scans gathered by an ultrasonic sensor.
+- A new `thin_runner.launch` file to enable SparseGSLAM to run on embedded platforms (this runner offers no visualization functionalities, instead capturing relevant ROS topics using ROSBAG).
+- A new `map_viz.launch` file that enables the visualization of the SLAM results produced by `thin_runner.launch`.
+- Disabled real-time rendering of pose and landmark graphs, including the publication of submap markers, false loop-closure candidate reporting and other non-essential information produced by `log_runner.launch`.
+- Various minor modifications in the form of compiler optimizations (e.g. use of `std::array` over `std::vector` where allowed, use of static-casting and `constexpr` wherever applicable) to improve efficiency.
+- Modified this README.md file to include new instructions for use with the EV3Rover data acqusition module.
 
 ## Installation
+- Recommended: Ubuntu 20.04 with ROS noetic OR Ubuntu 18.04 with ROS melodic
+- C++14-compatible compiler (preferably GNU)
 
-We recommend Ubuntu 20.04 with ROS noetic, but it should also work on Ubuntu 18.04 with ROS melodic. Our code requires a C++14 capable compiler. 
-
-## Prereqs
-
-1. Install dependencies using package manager:
-
+## Prerequisites
+1. Install ROS dependencies:
 ```
-sudo apt install ros-noetic-jsk-rviz-plugins ros-noetic-navigation ros-noetic-joy
+sudo apt install ros-melodic-jsk-rviz-plugins ros-melodic-navigation ros-melodic-joy
 ```
-
-2. Follow the instruction on https://google-cartographer.readthedocs.io/en/latest/ to build and install google cartographer
-
-3. Clone the libg2o-release repository (https://github.com/ros-gbp/libg2o-release) and
-    > We use this repo rather than the latest g2o because g2o comes with its own version of ceres-solver, which may conflict with the version used by cartographer. This makes sure that they will not conflict.
+2. Build & install [Google Cartographer](https://google-cartographer.readthedocs.io/en/latest/)
+3. Clone the libg2o-release repository (https://github.com/ros-gbp/libg2o-release):
     - checkout release/{your-ros-distro}/libg2o branch
-    - in config.h.in, make sure that the macro `#define G2O_DELETE_IMPLICITLY_OWNED_OBJECTS 0` is enabled
-    > we manage memories for edges and vertices ourselves. You will get segfault if you miss this step.
-    - in CMakeLists.txt, search for `BUILD_WITH_MARCH_NATIVE` and make sure it is ON
-    > You may get segfault if you miss this step
-    - follow the readme to build and install it
-    - run `sudo ldconfig` command to update links
-
+    - in config.h.in, `#define G2O_DELETE_IMPLICITLY_OWNED_OBJECTS 0` (edges and vertices are managed by SparseGSLAM)
+    - in CMakeLists.txt, set `BUILD_WITH_MARCH_NATIVE` to `ON`
+    - update links with `sudo ldconfig`
 4. Clone this repository and build
-
 ```bash
 catkin_make -DCMAKE_BUILD_TYPE=Release
 ```
-
-5. Download datasets and evaluation scripts by running
-
+## Running
+On the embedded platform (SLAM logic):
 ```bash
-cd src/sparse_gslam/datasets
-./download.sh
+roslaunch sparse_gslam thin_runner.launch dataset:=ev3
+scp src/sparse_gslam/bagfiles/out.bag <destination/modern/computer/with/gui>
 ```
-
-## Running our code
-
+On a computer with GUI capabilities (map and trajectory visualization - MapViz):
 ```bash
-roslaunch sparse_gslam log_runner.launch dataset:={dataset_name}
+roslaunch sparse_gslam map_viz.launch
 ```
-
-where {dataset_name} is one of the directory names under src/sparse_gslam/datasets (e.g. intel-lab).
-
-## Compute SLAM Metrics
-
-For aces, intel-lab and mit-killian, ground truths are available and SLAM metrics can be calculated. After running our code with the command above and waiting for it to finish, you can use our evaluation script to compute the metrics
-
-```bash
-cd src/sparse_gslam/datasets
-./eval.sh {dataset_name}
-```
-
