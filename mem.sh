@@ -1,3 +1,4 @@
+#!/bin/bash
 DUR=$1  # The duration this script runs for
 INT=$2  # The interval at which we record the memory usage for each process
 
